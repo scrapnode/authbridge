@@ -163,6 +163,7 @@ function getUserPoolSchema() {
         .oneOf(["Boolean", "DateTime", "Number", "String"]),
       DeveloperOnlyAttribute: bool(),
       Mutable: bool(),
+      Required: bool(),
       NumberAttributeConstraints: object().shape({
         MinValue: number(),
         MaxValue: number(),

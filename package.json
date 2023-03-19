@@ -8,6 +8,7 @@
     "node": ">=14.15.0"
   },
   "dependencies": {
+    "@aws-sdk/client-cognito-identity-provider": "^3.294.0",
     "@middy/core": "^3.6.2",
     "@middy/http-error-handler": "^4.2.7",
     "@middy/http-json-body-parser": "^3.6.2",
@@ -21,6 +22,7 @@
   "devDependencies": {
     "@serverless/typescript": "^3.0.0",
     "@types/aws-lambda": "^8.10.71",
+    "@types/mustache": "^4.2.2",
     "@types/node": "^14.14.25",
     "esbuild": "^0.14.11",
     "json-schema-to-ts": "^1.5.0",

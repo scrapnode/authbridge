@@ -8,9 +8,11 @@ import { project } from "@configs/project";
 import { logger } from "@libs/logger";
 
 const ping: Handler<APIGatewayProxyEvent, APIGatewayProxyResult> = async (
-  event
+  event,
+  context
 ) => {
-  logger.debug({ event }, "received event");
+  logger.debug({ event, context }, "received event");
+
   return ok({
     timestamps: new Date().toISOString(),
     project: {

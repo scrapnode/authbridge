@@ -1,6 +1,7 @@
 import { project } from "@configs/project";
 
 export interface Cognito {
+  region: string;
   pool: {
     id: string;
     name: string;
@@ -16,6 +17,7 @@ export interface Cognito {
 }
 
 export const cognito: Cognito = {
+  region: project.region,
   pool: {
     id: process.env.COGNITO_POOL_ID || "",
     name: `${project.name}-accounts`,
