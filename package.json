@@ -14,7 +14,9 @@
     "@middy/validator": "^4.2.7",
     "dotenv": "^16.0.3",
     "lodash": "^4.17.21",
-    "pino": "^8.11.0"
+    "mustache": "^4.2.0",
+    "pino": "^8.11.0",
+    "yup": "^1.0.2"
   },
   "devDependencies": {
     "@serverless/typescript": "^3.0.0",

@@ -1,6 +1,9 @@
 require("dotenv").config();
+import fs from "fs";
+import path from "path";
 import type { AWS } from "@serverless/typescript";
 import startCase from "lodash/startCase";
+import { array, object, string, bool, number } from "yup";
 
 import configs from "@configs/index";
 import { environments } from "@configs/environments";
@@ -51,10 +54,35 @@ const serverlessConfiguration: AWS = {
     },
     logRetentionInDays: 7,
     timeout: 25,
+    httpApi: {
+      cors: true,
+      authorizers: {
+        cognito: {
+          type: "jwt",
+          name: "cognito",
+          identitySource: "$request.header.Authorization",
+          issuerUrl: {
+            "Fn::Join": [
+              "",
+              [
+                "https://cognito-idp.",
+                configs.project.region,
+                ".amazonaws.com/",
+                { Ref: "UserPool" },
+              ],
+            ],
+          },
+          audience: [{ Ref: "UserPoolClient" }],
+        },
+      },
+    },
   },
   // import the function via paths
   functions,
-  package: { individually: true },
+  package: {
+    individually: true,
+    include: ["templates/*.mustache"],
+  },
   custom: {
     esbuild: {
       bundle: true,
@@ -95,6 +123,7 @@ const serverlessConfiguration: AWS = {
             )} Account Confirmation`,
             EmailMessageByLink: "Your confirmation link is {##Click Here##}",
           },
+          Schema: getUserPoolSchema(),
         },
       },
       UserPoolDomain: {
@@ -124,3 +153,28 @@ const serverlessConfiguration: AWS = {
 };
 
 module.exports = serverlessConfiguration;
+
+function getUserPoolSchema() {
+  const validator = array().of(
+    object().shape({
+      Name: string().required(),
+      AttributeDataType: string()
+        .required()
+        .oneOf(["Boolean", "DateTime", "Number", "String"]),
+      DeveloperOnlyAttribute: bool(),
+      Mutable: bool(),
+      NumberAttributeConstraints: object().shape({
+        MinValue: number(),
+        MaxValue: number(),
+      }),
+      StringAttributeConstraints: object().shape({
+        MinLength: number(),
+        MaxLength: number(),
+      }),
+    })
+  );
+  const data = JSON.parse(
+    fs.readFileSync(path.resolve(__dirname, "./data/user-schema.json"), "utf8")
+  );
+  return validator.validateSync(data);
+}

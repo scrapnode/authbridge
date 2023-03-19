@@ -1,0 +1,12 @@
+[
+  {
+    "Name": "role",
+    "AttributeDataType": "String",
+    "DeveloperOnlyAttribute": true,
+    "Mutable": true,
+    "StringAttributeConstraints": {
+      "MinLength": 1,
+      "MaxLength": 255
+    }
+  }
+]
