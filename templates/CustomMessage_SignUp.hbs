@@ -7,25 +7,34 @@
           style="padding: 40px 0 30px 0; text-align: center"
         >
           <img
-            src="https://aiwork.io/assets/images/logo/logo-white.png"
+            src="https://via.placeholder.com/600x150?text=AuthBridge"
             alt="Logo"
           />
         </td>
       </tr>
       <tr>
         <td bgcolor="#ffffff">
-          <p style="padding: 20px 0 0 0; text-align: center">
+          <p style="padding: 5px 0 0 0; text-align: center">
+            Hello
+            {{#if event.request.userAttributes.name}}
+              {{event.request.userAttributes.name}}
+            {{else}}
+              {{event.request.userAttributes.email}}
+            {{/if}}
+          </p>
+          <p style="padding: 10px 0 0 0; text-align: center">
             Please click the link bellow to verify you account
           </p>
-          <p style="padding: 20px 0 0 0; text-align: center">
-            {{ link }}
+          <p style="padding: 5px 0 0 0; text-align: center">
+            {{event.request.linkParameter}}
           </p>
         </td>
       </tr>
       <tr>
         <td bgcolor="#ffffff" style="font-weight: 500; font-size: 11px">
           <p style="padding: 10px 0 10px 0; text-align: center">
-            © Copyright {{ now }}. All Rights Reserved.
+            © Copyright
+            {{now}}. All Rights Reserved.
           </p>
         </td>
       </tr>

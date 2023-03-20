@@ -1,34 +1,27 @@
 import fs from "fs";
 import path from "path";
-import Mustache from "mustache";
-import { project } from "@configs/project";
-import { cognito } from "@configs/cognito";
+import { TemplateDelegate, compile } from "handlebars";
 
 export class Template {
   private readonly directory: string;
-  private cache: { [name: string]: string } = {};
+  private readonly values: object;
+  private cache: { [name: string]: TemplateDelegate } = {};
 
-  constructor(dir: string) {
+  constructor(dir: string, values: object) {
     this.directory = dir;
+    this.values = values;
   }
 
   async render(name: string, props: any) {
-    const template = await this.get(name);
-    return Mustache.render(template, { ...this.base(), ...props });
+    const render = await this.get(name);
+    return render({ now: () => new Date(), ...this.values, ...props });
   }
 
-  private base(): { [name: string]: any } {
-    return {
-      now: () => new Date(),
-      project,
-      cognito,
-    };
-  }
-
-  private async get(name: string): Promise<string> {
+  private async get(name: string): Promise<TemplateDelegate> {
     if (!this.cache[name]) {
-      const filepath = path.resolve(this.directory, `${name}.mustache`);
-      this.cache[name] = await fs.promises.readFile(filepath, "utf8");
+      const filepath = path.resolve(this.directory, `${name}.hbs`);
+      const template = await fs.promises.readFile(filepath, "utf8");
+      this.cache[name] = compile(template);
     }
 
     return this.cache[name];

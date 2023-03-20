@@ -14,8 +14,8 @@
     "@middy/http-json-body-parser": "^3.6.2",
     "@middy/validator": "^4.2.7",
     "dotenv": "^16.0.3",
+    "handlebars": "^4.7.7",
     "lodash": "^4.17.21",
-    "mustache": "^4.2.0",
     "pino": "^8.11.0",
     "yup": "^1.0.2"
   },

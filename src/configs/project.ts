@@ -8,7 +8,7 @@ export interface Project {
 export const project: Project = {
   debug: false,
   env: process.env.PROJECT_ENV || "production",
-  name: process.env.PROJECT_NAME || "authbridge",
+  name: process.env.PROJECT_NAME || "AuthBridge",
   region: process.env.PROJECT_REGION || "us-east-2",
 };
 if (project.env === "development") project.debug = true;
