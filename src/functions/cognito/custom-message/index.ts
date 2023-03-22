@@ -1,7 +1,7 @@
 import { handlerPath } from "@libs/helpers";
 import { cognito } from "@configs/cognito";
 
-export const cognitocustommessage = {
+export const cognitoCustomMessage = {
   handler: `${handlerPath(__dirname)}/handler.main`,
   events: [
     {

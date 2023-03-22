@@ -1,1 +1,1 @@
-export { default as devping } from "./ping";
+export { default as devPing } from "./ping";

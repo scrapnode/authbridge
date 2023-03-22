@@ -2,6 +2,7 @@ import { project } from "@configs/project";
 import { cognito } from "@configs/cognito";
 
 export const environments: { [name: string]: any } = {
+  AWS_ACCOUNT_ID: process.env.AWS_ACCOUNT_ID || "",
   PROJECT_ENV: project.env,
   PROJECT_NAME: project.name,
   PROJECT_REGION: project.region,
@@ -12,8 +13,12 @@ export const environments: { [name: string]: any } = {
 // those refs will be resolved by serverless template
 // then it will be set as environment
 // later, in lambda function on aws we can use it
-if (!project.debug) {
+if (!environments.AWS_ACCOUNT_ID) {
   environments.AWS_ACCOUNT_ID = { Ref: "AWS::AccountId" };
+}
+if (!environments.COGNITO_POOL_ID) {
   environments.COGNITO_POOL_ID = { Ref: "UserPool" };
+}
+if (!environments.COGNITO_CLIENT_ID) {
   environments.COGNITO_CLIENT_ID = { Ref: "UserPoolClient" };
 }

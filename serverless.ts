@@ -81,7 +81,7 @@ const serverlessConfiguration: AWS = {
   functions,
   package: {
     individually: true,
-    include: ["templates/*.hbs"],
+    patterns: ["templates/*.hbs"],
   },
   custom: {
     esbuild: {
