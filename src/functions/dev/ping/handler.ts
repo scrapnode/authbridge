@@ -1,18 +1,10 @@
-import {
-  APIGatewayProxyEvent,
-  APIGatewayProxyResult,
-  Handler,
-} from "aws-lambda";
+import { APIGatewayEvent, ProxyResult, Handler } from "aws-lambda";
+import middy from "@middy/core";
 import { ok } from "@libs/response";
+import * as mw from "@functions/middlewares";
 import { project } from "@configs/project";
-import { logger } from "@libs/logger";
 
-const ping: Handler<APIGatewayProxyEvent, APIGatewayProxyResult> = async (
-  event,
-  context
-) => {
-  logger.debug({ event, context }, "received event");
-
+const ping: Handler<APIGatewayEvent, ProxyResult> = async () => {
   return ok({
     timestamps: new Date().toISOString(),
     project: {
@@ -23,4 +15,4 @@ const ping: Handler<APIGatewayProxyEvent, APIGatewayProxyResult> = async (
   });
 };
 
-export const main = ping;
+export const main = middy().use(mw.logger.use()).handler(ping);

@@ -1,7 +1,8 @@
 import path from "path";
 import type { Handler, CustomMessageTriggerEvent, Context } from "aws-lambda";
 import startCase from "lodash/startCase";
-import { logger } from "@libs/logger";
+import middy from "@middy/core";
+import * as mw from "@functions/middlewares";
 import { Template } from "@libs/template";
 import { project } from "@configs/project";
 import { cognito } from "@configs/cognito";
@@ -10,8 +11,6 @@ const customMessage: Handler<CustomMessageTriggerEvent> = async (
   event,
   context
 ) => {
-  logger.debug({ event, context }, "received event");
-
   switch (event.triggerSource) {
     case "CustomMessage_SignUp":
       return onSignUp(event, context);
@@ -22,7 +21,7 @@ const customMessage: Handler<CustomMessageTriggerEvent> = async (
   }
 };
 
-export const main = customMessage;
+export const main = middy().use(mw.logger.use()).handler(customMessage);
 
 const template = new Template(
   path.resolve(__dirname, "../../../../templates"),
