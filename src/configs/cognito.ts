@@ -16,18 +16,19 @@ export interface Cognito {
   };
 }
 
+const prefix = project.name.toLowerCase();
 export const cognito: Cognito = {
   region: project.region,
   pool: {
     id: process.env.COGNITO_POOL_ID || "",
-    name: `${project.name}-accounts`,
+    name: `${prefix}-accounts`,
   },
   client: {
     id: process.env.COGNITO_CLIENT_ID || "",
-    name: `${project.name}-default`,
+    name: `${prefix}-default`,
   },
   domain: {
-    name: `${project.name}-accounts`,
-    url: `https://${project.name}-accounts.auth.${project.region}.amazoncognito.com`,
+    name: `${prefix}-accounts`,
+    url: `https://${prefix}-accounts.auth.${project.region}.amazoncognito.com`,
   },
 };

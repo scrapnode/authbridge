@@ -1,3 +1,11 @@
-export * from "./dev";
-export * from "./cognito";
-export * from "./account";
+import account from "./account";
+import auth from "./auth";
+import cognito from "./cognito";
+import dev from "./dev";
+
+export default {
+  ...account,
+  ...auth,
+  ...cognito,
+  ...dev,
+};

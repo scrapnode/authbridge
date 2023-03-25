@@ -1,16 +1,12 @@
 require("dotenv").config();
-import fs from "fs";
-import path from "path";
 import type { AWS } from "@serverless/typescript";
-import startCase from "lodash/startCase";
-import { array, object, string, bool, number } from "yup";
 
 import configs from "@configs/index";
 import { environments } from "@configs/environments";
-import * as functions from "@functions/index";
+import functions from "@functions/index";
 
 const serverlessConfiguration: AWS = {
-  service: "authbridge",
+  service: configs.project.name.toLowerCase(),
   frameworkVersion: "3",
   plugins: ["serverless-esbuild"],
   provider: {
@@ -114,16 +110,11 @@ const serverlessConfiguration: AWS = {
           },
           VerificationMessageTemplate: {
             DefaultEmailOption: "CONFIRM_WITH_LINK",
-            EmailSubject: `${startCase(
-              configs.project.name
-            )} Account Confirmation`,
+            EmailSubject: `${configs.project.name} Account Confirmation`,
             EmailMessage: "Your confirmation code is {####}",
-            EmailSubjectByLink: `${startCase(
-              configs.project.name
-            )} Account Confirmation`,
+            EmailSubjectByLink: `${configs.project.name} Account Confirmation`,
             EmailMessageByLink: "Your confirmation link is {##Click Here##}",
           },
-          Schema: getUserPoolSchema(),
         },
       },
       UserPoolDomain: {
@@ -153,29 +144,3 @@ const serverlessConfiguration: AWS = {
 };
 
 module.exports = serverlessConfiguration;
-
-function getUserPoolSchema() {
-  const validator = array().of(
-    object().shape({
-      Name: string().required(),
-      AttributeDataType: string()
-        .required()
-        .oneOf(["Boolean", "DateTime", "Number", "String"]),
-      DeveloperOnlyAttribute: bool(),
-      Mutable: bool(),
-      Required: bool(),
-      NumberAttributeConstraints: object().shape({
-        MinValue: number(),
-        MaxValue: number(),
-      }),
-      StringAttributeConstraints: object().shape({
-        MinLength: number(),
-        MaxLength: number(),
-      }),
-    })
-  );
-  const data = JSON.parse(
-    fs.readFileSync(path.resolve(__dirname, "./data/user-schema.json"), "utf8")
-  );
-  return validator.validateSync(data);
-}

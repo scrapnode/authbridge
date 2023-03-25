@@ -1,6 +1,5 @@
 import path from "path";
 import type { Handler, CustomMessageTriggerEvent, Context } from "aws-lambda";
-import startCase from "lodash/startCase";
 import middy from "@middy/core";
 import * as mw from "@functions/middlewares";
 import { Template } from "@libs/template";
@@ -31,9 +30,7 @@ export async function onSignUp(
   event: CustomMessageTriggerEvent,
   context: Context
 ): Promise<CustomMessageTriggerEvent> {
-  event.response.emailSubject = `${startCase(
-    project.name
-  )} Account Confirmation`;
+  event.response.emailSubject = `${project.name} Account Confirmation`;
   event.response.emailMessage = await template.render(event.triggerSource, {
     event,
     context,

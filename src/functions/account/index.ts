@@ -1,3 +1,5 @@
-export { default as accountRegister } from "./register";
-export { default as accountLogin } from "./login";
-export * from "./password";
+import register from "./register";
+
+export default {
+  "account-register": register,
+};
