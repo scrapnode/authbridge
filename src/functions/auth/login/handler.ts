@@ -1,7 +1,8 @@
 import { ProxyResult, Handler } from "aws-lambda";
 import middy from "@middy/core";
 import json, { Event } from "@middy/http-json-body-parser";
-import * as yup from "yup";
+import validator from "@middy/validator";
+import { transpileSchema } from "@middy/validator/transpile";
 import cfg from "@configs/index";
 import { ok } from "@libs/response";
 import * as mw from "@functions/middlewares";
@@ -14,7 +15,7 @@ import * as cognito from "@libs/cognito";
 const client = cognito.client(cfg.cognito);
 
 interface Req {
-  username: string;
+  email: string;
   password: string;
 }
 
@@ -24,7 +25,7 @@ const login: Handler<Event, ProxyResult> = async (event) => {
     ClientId: cfg.cognito.client.id,
     AuthFlow: "USER_PASSWORD_AUTH",
     AuthParameters: {
-      USERNAME: req.username,
+      USERNAME: req.email,
       PASSWORD: req.password,
     },
   };
@@ -39,12 +40,20 @@ export const main = middy()
   .use(json())
   .use(mw.logger.use())
   .use(
-    mw.validator.use<Event>({
-      event: yup.object().shape({
-        body: yup.object().shape({
-          username: yup.string().required(),
-          password: yup.string().required().min(6),
-        }),
+    validator({
+      eventSchema: transpileSchema({
+        type: "object",
+        required: ["body"],
+        properties: {
+          body: {
+            type: "object",
+            required: ["password", "email"],
+            properties: {
+              password: { type: "string", minLength: 6 },
+              email: { type: "string", format: "email" },
+            },
+          },
+        },
       }),
     })
   )

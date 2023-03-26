@@ -4,6 +4,7 @@ import type { AWS } from "@serverless/typescript";
 import configs from "@configs/index";
 import { environments } from "@configs/environments";
 import functions from "@functions/index";
+import attributes from "./data/cognito_attributes.json";
 
 const serverlessConfiguration: AWS = {
   service: configs.project.name.toLowerCase(),
@@ -77,7 +78,7 @@ const serverlessConfiguration: AWS = {
   functions,
   package: {
     individually: true,
-    patterns: ["templates/*.hbs"],
+    patterns: ["templates/*.hbs", "data/*.json"],
   },
   custom: {
     esbuild: {
@@ -115,6 +116,7 @@ const serverlessConfiguration: AWS = {
             EmailSubjectByLink: `${configs.project.name} Account Confirmation`,
             EmailMessageByLink: "Your confirmation link is {##Click Here##}",
           },
+          Schema: attributes,
         },
       },
       UserPoolDomain: {

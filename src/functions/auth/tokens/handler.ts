@@ -1,7 +1,8 @@
 import { ProxyResult, Handler } from "aws-lambda";
 import middy from "@middy/core";
 import json, { Event } from "@middy/http-json-body-parser";
-import * as yup from "yup";
+import validator from "@middy/validator";
+import { transpileSchema } from "@middy/validator/transpile";
 import cfg from "@configs/index";
 import { ok } from "@libs/response";
 import * as mw from "@functions/middlewares";
@@ -37,11 +38,19 @@ export const main = middy()
   .use(json())
   .use(mw.logger.use())
   .use(
-    mw.validator.use<Event>({
-      event: yup.object().shape({
-        body: yup.object().shape({
-          refresh_token: yup.string().required(),
-        }),
+    validator({
+      eventSchema: transpileSchema({
+        type: "object",
+        required: ["body"],
+        properties: {
+          body: {
+            type: "object",
+            required: ["refresh_token"],
+            properties: {
+              refresh_token: { type: "string", format: "email" },
+            },
+          },
+        },
       }),
     })
   )
