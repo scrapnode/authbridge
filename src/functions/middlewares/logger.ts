@@ -12,13 +12,5 @@ export function use(): MiddlewareObj {
     after(request) {
       logger.debug({ response: request.response }, "return response");
     },
-    onError(request) {
-      if (request.error) {
-        logger.error(
-          { event: request.event, context: request.context },
-          request.error.message
-        );
-      }
-    },
   };
 }

@@ -5,7 +5,8 @@
       "@configs/*": ["src/configs/*"],
       "@functions/*": ["src/functions/*"],
       "@libs/*": ["src/libs/*"],
-      "@domain/*": ["src/domain/*"]
+      "@domain/*": ["src/domain/*"],
+      "@helpers/*": ["src/helpers/*"]
     }
   }
 }

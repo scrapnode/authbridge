@@ -4,7 +4,7 @@ import type { AWS } from "@serverless/typescript";
 import configs from "@configs/index";
 import { environments } from "@configs/environments";
 import functions from "@functions/index";
-import attributes from "./data/cognito_attributes.json";
+import attributes from "./data/cognito-attributes.json";
 
 const serverlessConfiguration: AWS = {
   service: configs.project.name.toLowerCase(),

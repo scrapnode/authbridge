@@ -1,0 +1,10 @@
+{
+  "callbackWaitsForEmptyEventLoop": true,
+  "functionVersion": "$LATEST",
+  "functionName": "authbridge-dev-account-register",
+  "memoryLimitInMB": "1024",
+  "logGroupName": "/aws/lambda/authbridge-dev-account-register",
+  "logStreamName": "2023/03/26/[$LATEST]f409a3ed19ce4beba32058f7beb1099e",
+  "invokedFunctionArn": "arn:aws:lambda:us-east-2:058434268238:function:authbridge-dev-account-register",
+  "awsRequestId": "bf01d6ec-1a05-477f-a7bd-f2c745405239"
+}

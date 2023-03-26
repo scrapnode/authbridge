@@ -1,8 +1,6 @@
 import { ProxyResult, Handler } from "aws-lambda";
 import middy from "@middy/core";
 import json, { Event } from "@middy/http-json-body-parser";
-import validator from "@middy/validator";
-import { transpileSchema } from "@middy/validator/transpile";
 import cfg from "@configs/index";
 import { ok } from "@libs/response";
 import * as mw from "@functions/middlewares";
@@ -37,22 +35,16 @@ const login: Handler<Event, ProxyResult> = async (event) => {
 };
 
 export const main = middy()
-  .use(json())
   .use(mw.logger.use())
+  .use(json())
   .use(
-    validator({
-      eventSchema: transpileSchema({
+    mw.validator.use({
+      body: mw.validator.compile({
         type: "object",
-        required: ["body"],
+        required: ["password", "email"],
         properties: {
-          body: {
-            type: "object",
-            required: ["password", "email"],
-            properties: {
-              password: { type: "string", minLength: 6 },
-              email: { type: "string", format: "email" },
-            },
-          },
+          password: { type: "string", minLength: 6 },
+          email: { type: "string", format: "email" },
         },
       }),
     })
