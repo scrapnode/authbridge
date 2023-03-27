@@ -49,7 +49,7 @@ const serverlessConfiguration: AWS = {
       NODE_OPTIONS: "--enable-source-maps --stack-trace-limit=1000",
       ...environments,
     },
-    logRetentionInDays: 7,
+    logRetentionInDays: 30,
     timeout: 25,
     httpApi: {
       cors: true,
