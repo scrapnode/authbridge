@@ -1,7 +1,7 @@
 {
   "version": "2.0",
-  "routeKey": "POST /account",
-  "rawPath": "/account",
+  "routeKey": "POST /auth",
+  "rawPath": "/auth",
   "rawQueryString": "",
   "headers": {
     "accept": "application/json, */*;q=0.5",
@@ -22,17 +22,17 @@
     "domainPrefix": "elztg7zs63",
     "http": {
       "method": "POST",
-      "path": "/account",
+      "path": "/auth",
       "protocol": "HTTP/1.1",
       "sourceIp": "125.235.236.90",
       "userAgent": "HTTPie/3.0.2"
     },
     "requestId": "CYPDdi9XCYcEMNg=",
-    "routeKey": "POST /account",
+    "routeKey": "POST /auth",
     "stage": "$default",
     "time": "26/Mar/2023:07:47:08 +0000",
     "timeEpoch": 1679816828226
   },
   "isBase64Encoded": false,
-  "body": "{\"email\": \"kqavbhuopdknwwlien@bbitj.com\", \"password\": \"alonglongpassword\", \"name\": \"Tuan Nguyen\"}"
+  "body": "{\"email\": \"kqavbhuopdknwwlien@bbitj.com\", \"password\": \"alonglongpassword\"}"
 }

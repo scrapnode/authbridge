@@ -4,34 +4,17 @@ import json, { Event } from "@middy/http-json-body-parser";
 import cfg from "@configs/index";
 import { ok } from "@libs/response";
 import * as mw from "@functions/middlewares";
-import {
-  InitiateAuthCommand,
-  InitiateAuthCommandInput,
-} from "@aws-sdk/client-cognito-identity-provider";
+import { InitiateAuthCommand } from "@aws-sdk/client-cognito-identity-provider";
 import * as cognito from "@libs/cognito";
+import { fromRequest, toResponse } from "./transform";
 
 const client = cognito.client(cfg.cognito);
 
-interface Req {
-  email: string;
-  password: string;
-}
-
 const login: Handler<Event, ProxyResult> = async (event) => {
-  const req: Req = event.body as any;
-  const input: InitiateAuthCommandInput = {
-    ClientId: cfg.cognito.client.id,
-    AuthFlow: "USER_PASSWORD_AUTH",
-    AuthParameters: {
-      USERNAME: req.email,
-      PASSWORD: req.password,
-    },
-  };
-
+  const input = fromRequest(event.body as any);
   const cmd = new InitiateAuthCommand(input);
   const output = await client.send(cmd);
-
-  return ok(output);
+  return ok(toResponse(output));
 };
 
 export const main = middy()
