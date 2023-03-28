@@ -16,10 +16,10 @@
         <td bgcolor="#ffffff">
           <p style="padding: 5px 0 0 0; text-align: center">
             Hello
-            {{#if event.request.userAttributes.name}}
-              {{event.request.userAttributes.name}}
+            {{#if user.name}}
+              {{user.name}}
             {{else}}
-              {{event.request.userAttributes.email}}
+              {{user.email}}
             {{/if}}
           </p>
           <p style="padding: 10px 0 0 0; text-align: center">
