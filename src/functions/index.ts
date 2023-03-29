@@ -1,6 +1,7 @@
 import account from "./account";
 import auth from "./auth";
 import cognito from "./cognito";
+import me from "./me";
 import dev from "./dev";
 
 export default {
@@ -8,4 +9,5 @@ export default {
   ...auth,
   ...cognito,
   ...dev,
+  ...me,
 };
