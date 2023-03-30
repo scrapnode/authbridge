@@ -6,7 +6,6 @@ import cfg from "@configs/index";
 import { ok } from "@libs/response";
 import * as mw from "@functions/middlewares";
 import * as cognito from "@libs/cognito";
-import * as attributes from "@helpers/cognito/attributes";
 import { fromRequest, toResponse } from "./transform";
 
 const client = cognito.client(cfg.cognito);
@@ -31,16 +30,14 @@ export const main = middy()
           authorization: { type: "string" },
         },
       }),
-      body: mw.validator.compile(
-        attributes.validator({
-          type: "object",
-          required: ["previous_password", "proposed_password"],
-          properties: {
-            previous_password: { type: "string", format: "password" },
-            proposed_password: { type: "string", format: "password" },
-          },
-        })
-      ),
+      body: mw.validator.compile({
+        type: "object",
+        required: ["previous_password", "proposed_password"],
+        properties: {
+          previous_password: { type: "string", format: "password" },
+          proposed_password: { type: "string", format: "password" },
+        },
+      }),
     })
   )
   .handler(change)

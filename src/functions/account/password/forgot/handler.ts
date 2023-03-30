@@ -6,7 +6,6 @@ import cfg from "@configs/index";
 import { ok } from "@libs/response";
 import * as mw from "@functions/middlewares";
 import * as cognito from "@libs/cognito";
-import * as attributes from "@helpers/cognito/attributes";
 import { fromRequest, toResponse } from "./transform";
 
 const client = cognito.client(cfg.cognito);
@@ -23,15 +22,13 @@ export const main = middy()
   .use(json())
   .use(
     mw.validator.use({
-      body: mw.validator.compile(
-        attributes.validator({
-          type: "object",
-          required: ["email"],
-          properties: {
-            email: { type: "string", format: "email" },
-          },
-        })
-      ),
+      body: mw.validator.compile({
+        type: "object",
+        required: ["email"],
+        properties: {
+          email: { type: "string", format: "email" },
+        },
+      }),
     })
   )
   .handler(forgot)
