@@ -1,7 +1,7 @@
 {
   "version": "2.0",
-  "routeKey": "PUT /me/password",
-  "rawPath": "/me/password",
+  "routeKey": "PATCH /me",
+  "rawPath": "/me",
   "rawQueryString": "",
   "headers": {
     "accept": "*/*",
@@ -41,18 +41,18 @@
     "domainName": "elztg7zs63.execute-api.us-east-2.amazonaws.com",
     "domainPrefix": "elztg7zs63",
     "http": {
-      "method": "PUT",
-      "path": "/me/password",
+      "method": "PATCH",
+      "path": "/me",
       "protocol": "HTTP/1.1",
       "sourceIp": "125.235.236.43",
       "userAgent": "HTTPie/3.0.2"
     },
     "requestId": "Ci7ODgdEiYcEJfA=",
-    "routeKey": "PUT /me/password",
+    "routeKey": "PATCH /me",
     "stage": "$default",
     "time": "29/Mar/2023:13:37:42 +0000",
     "timeEpoch": 1680097062434
   },
   "isBase64Encoded": false,
-  "body": "{\"previous_password\": \"anotherlonglongpassword\",\"proposed_password\": \"ashortpassword\"}"
+  "body": "{\"picture\": \"https://i.pravatar.cc/150?img=7\",\"age\": 30}"
 }

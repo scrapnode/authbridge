@@ -1,10 +1,15 @@
 import attributes from "../../../data/cognito-attributes.json";
 
-export function validator(schema: { [name: string]: any }): {
+export function validator(
+  schema: { [name: string]: any },
+  ignoreRequired = false
+): {
   [name: string]: any;
 } {
   for (const attribute of attributes) {
-    if (attribute.Required) schema.required.push(attribute.Name);
+    if (attribute.Required && !ignoreRequired) {
+      schema.required.push(attribute.Name);
+    }
 
     schema.properties[attribute.Name] = {
       type: attribute.AttributeDataType.toLowerCase(),
