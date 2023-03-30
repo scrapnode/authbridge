@@ -1,12 +1,12 @@
 {
   "version": "2.0",
-  "routeKey": "GET /me",
-  "rawPath": "/me",
+  "routeKey": "GET /me/password",
+  "rawPath": "/me/password",
   "rawQueryString": "",
   "headers": {
     "accept": "*/*",
     "accept-encoding": "gzip, deflate",
-    "authorization": "Bearer eyJraWQiOiJVS0NlT0VuUklpVUtIMkRcL0Roem42S21nUEtYOTVhOWV6UVVXbmJxNXJqaz0iLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJkYjYyYTRmZC00M2JkLTQ3NWItYjVmMS0zZmFlNjE0ZTlhY2YiLCJpc3MiOiJodHRwczpcL1wvY29nbml0by1pZHAudXMtZWFzdC0yLmFtYXpvbmF3cy5jb21cL3VzLWVhc3QtMl9MQXdXTXZwc3ciLCJjbGllbnRfaWQiOiIydWI4ZWdjNmIwcDhlZmpvcjU4MHUxODVraSIsIm9yaWdpbl9qdGkiOiI4OWU2MDk2ZC01ZmQxLTQ1NWEtODRmZi1kMGE0MzhiMzZjMWYiLCJldmVudF9pZCI6IjNiYTY2YWI0LTkyYTUtNGQ2Mi1iOTA3LWNlZjQ0ZjFkZTZhOCIsInRva2VuX3VzZSI6ImFjY2VzcyIsInNjb3BlIjoiYXdzLmNvZ25pdG8uc2lnbmluLnVzZXIuYWRtaW4iLCJhdXRoX3RpbWUiOjE2ODAwOTYzMDgsImV4cCI6MTY4MDE4MjcwOCwiaWF0IjoxNjgwMDk2MzA4LCJqdGkiOiJmNDhiNzcyMy1iZDg4LTQyZDYtODNkYS01ZWMwMGEzOGM4NDQiLCJ1c2VybmFtZSI6ImRiNjJhNGZkLTQzYmQtNDc1Yi1iNWYxLTNmYWU2MTRlOWFjZiJ9.LnAqkmI8KWNmNGuS_QkE6_sDk6mMwPHJVAzqgFd0f6A4kmjT9OmMl3hzWwxi36j5H5YS8b70bHBlIalBjzr-xwZ1KdFMaPOWIi2R49oDPyVlPk-9ebapyd5XdbZwMbAbpwPNVsS0QR66EoFbv-TqYua43DNGRxVjc0xc-fp45GaEjYjWTCtgyxGYmjRraetjGrmbLY4Gd2YimMLuCCPwZvlw84dIu0e6ptQkFE-dgtcdYKb_YsASR7sFaeA61cckQX_bQ-Iyeg-UXQFLpSOgLc7keKdxK18b3O2NVeFWgGZ2TfcgZj968JWU2I9iU5XII4o05fQkFT7xMMMOGHGKNw",
+    "authorization": "Bearer eyJraWQiOiJVS0NlT0VuUklpVUtIMkRcL0Roem42S21nUEtYOTVhOWV6UVVXbmJxNXJqaz0iLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJkYjYyYTRmZC00M2JkLTQ3NWItYjVmMS0zZmFlNjE0ZTlhY2YiLCJpc3MiOiJodHRwczpcL1wvY29nbml0by1pZHAudXMtZWFzdC0yLmFtYXpvbmF3cy5jb21cL3VzLWVhc3QtMl9MQXdXTXZwc3ciLCJjbGllbnRfaWQiOiIydWI4ZWdjNmIwcDhlZmpvcjU4MHUxODVraSIsIm9yaWdpbl9qdGkiOiJjZjkxYWQ5YS1jY2QwLTQ2OTgtOTk5MC1kMThjNmNjMzkzY2MiLCJldmVudF9pZCI6IjA5ZTQxN2Y3LWRlZWItNDRkYi05YjQ3LWNjN2QwN2RjZjIwZiIsInRva2VuX3VzZSI6ImFjY2VzcyIsInNjb3BlIjoiYXdzLmNvZ25pdG8uc2lnbmluLnVzZXIuYWRtaW4iLCJhdXRoX3RpbWUiOjE2ODAxODE3OTIsImV4cCI6MTY4MDI2ODE5MiwiaWF0IjoxNjgwMTgxNzkyLCJqdGkiOiIzNzRmYjFlMS04MDFjLTQwZDktYTBlNC1jNGRmMDg3YzhmNDMiLCJ1c2VybmFtZSI6ImRiNjJhNGZkLTQzYmQtNDc1Yi1iNWYxLTNmYWU2MTRlOWFjZiJ9.GbSYtFoLO1cmbIvT4q25FWgZn0hFJDPoHMbLmVmhsqbC1RYjOpD_EiBaBsoty2cFAN23ALVez_bOrJMfYu3GYF3kiAEK8gezHmHcMI4y84az2MJkE9l_KOX6ixQhl98pB6viFURUBeQWrbeoTblnnF_LteKmVEfweIFbazQzp8dpkzZZdh4li3TX6swL2zZAvuLX33e37EE8zZk9Jj42BKGsBzbtawMaIb4LmeeHs44Q66p5_AKNRfyZ0tenaGoILuyK9uDn43F8b8gT2JEN2tu5klhfsA2n58y9exSX8aDCJCK-rDVPgZKC4080q6R8yyKarYHUc-qcYzeIo98tCg",
     "content-length": "0",
     "content-type": "application/json",
     "host": "elztg7zs63.execute-api.us-east-2.amazonaws.com",
@@ -42,16 +42,17 @@
     "domainPrefix": "elztg7zs63",
     "http": {
       "method": "GET",
-      "path": "/me",
+      "path": "/me/password",
       "protocol": "HTTP/1.1",
       "sourceIp": "125.235.236.43",
       "userAgent": "HTTPie/3.0.2"
     },
     "requestId": "Ci7ODgdEiYcEJfA=",
-    "routeKey": "GET /me",
+    "routeKey": "GET /me/password",
     "stage": "$default",
     "time": "29/Mar/2023:13:37:42 +0000",
     "timeEpoch": 1680097062434
   },
-  "isBase64Encoded": false
+  "isBase64Encoded": false,
+  "body": "{\"previous_password\": \"anotherlonglongpassword\",\"proposed_password\": \"ashortpassword\"}"
 }
