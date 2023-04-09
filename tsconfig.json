@@ -12,7 +12,7 @@
     "esModuleInterop": true,
     "resolveJsonModule": true
   },
-  "include": ["src/**/*.ts", "serverless.ts"],
+  "include": ["backend/**/*.ts", "data/**/*.json", "serverless.ts"],
   "exclude": [
     "node_modules/**/*",
     ".serverless/**/*",

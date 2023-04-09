@@ -1,4 +1,4 @@
-import attributes from "../../../data/cognito-attributes.json";
+import attributes from "@data/cognito-attributes.json";
 
 export function validator(
   schema: { [name: string]: any },

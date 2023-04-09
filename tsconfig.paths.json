@@ -2,11 +2,12 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@configs/*": ["src/configs/*"],
-      "@functions/*": ["src/functions/*"],
-      "@libs/*": ["src/libs/*"],
-      "@domain/*": ["src/domain/*"],
-      "@helpers/*": ["src/helpers/*"]
+      "@data/*": ["data/*"],
+      "@configs/*": ["backend/configs/*"],
+      "@functions/*": ["backend/functions/*"],
+      "@libs/*": ["backend/libs/*"],
+      "@domain/*": ["backend/domain/*"],
+      "@helpers/*": ["backend/helpers/*"]
     }
   }
 }

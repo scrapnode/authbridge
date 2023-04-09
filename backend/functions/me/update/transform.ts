@@ -2,7 +2,7 @@ import {
   UpdateUserAttributesCommandInput,
   UpdateUserAttributesCommandOutput,
 } from "@aws-sdk/client-cognito-identity-provider";
-import attributes from "../../../../data/cognito-attributes.json";
+import attributes from "@data/cognito-attributes.json";
 
 const custom = attributes.reduce(
   (m, attr) => ({ ...m, [attr.Name]: true }),
