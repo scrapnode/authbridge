@@ -138,3 +138,6 @@ dist
 # IDE
 .vscode
 .idea
+
+# Project
+openapi/**/*.json

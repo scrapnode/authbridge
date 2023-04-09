@@ -9,9 +9,10 @@ import attributes from "@data/cognito-attributes.json";
 const serverlessConfiguration: AWS = {
   service: configs.project.name.toLowerCase(),
   frameworkVersion: "3",
-  plugins: ["serverless-esbuild"],
+  plugins: ["serverless-esbuild", "serverless-hooks"],
   provider: {
     name: "aws",
+    stage: process.env.SLS_STAGE || "dev",
     region: configs.project.region as any,
     tags: {
       project: configs.project.name,

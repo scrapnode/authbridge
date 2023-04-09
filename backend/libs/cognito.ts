@@ -5,6 +5,7 @@ import {
 } from "@aws-sdk/client-cognito-identity-provider";
 import { Cognito } from "@configs/cognito";
 import { User } from "@domain/entities";
+import attributes from "@data/cognito-attributes.json";
 
 export function client(opts: Cognito) {
   return new CognitoIdentityProviderClient({ region: opts.region });
@@ -12,6 +13,12 @@ export function client(opts: Cognito) {
 
 export function withUser(opts: Cognito) {
   const c = client(opts);
+
+  const maps = attributes.reduce(
+    (m, attr) => ({ ...m, [attr.Name]: attr }),
+    {} as { [name: string]: { AttributeDataType: string } }
+  );
+
   return async function (username: string): Promise<User> {
     const input: AdminGetUserCommandInput = {
       UserPoolId: opts.pool.id,
@@ -37,6 +44,21 @@ export function withUser(opts: Cognito) {
         if (attribute.Name === "picture") user.picture = attribute.Value;
         if (attribute.Name === "phone_number") {
           user.phone_number = attribute.Value;
+        }
+
+        if (attribute.Name.startsWith("custom")) {
+          const key = attribute.Name.replace("custom:", "");
+          const map = maps[key];
+          if (map) {
+            console.log(map.AttributeDataType);
+            switch (map.AttributeDataType) {
+              case "Number":
+                user.attributes[key] = Number(attribute.Value);
+                break;
+              default:
+                user.attributes[key] = attribute.Value;
+            }
+          }
         }
       });
     }
