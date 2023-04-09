@@ -22,7 +22,7 @@ export const main = middy()
   .use(json())
   .use(
     mw.validator.use({
-      body: mw.validator.compile({
+      body: mw.validator.instance.compile<any>({
         type: "object",
         required: ["password", "email"],
         properties: {

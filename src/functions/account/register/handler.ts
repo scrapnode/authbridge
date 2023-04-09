@@ -6,7 +6,7 @@ import cfg from "@configs/index";
 import { ok } from "@libs/response";
 import * as mw from "@functions/middlewares";
 import * as cognito from "@libs/cognito";
-import * as attributes from "@helpers/cognito/attributes";
+import * as helpers from "@helpers/index";
 import { schema } from "@domain/entities";
 import { fromRequest, toResponse } from "./transform";
 
@@ -24,8 +24,8 @@ export const main = middy()
   .use(json())
   .use(
     mw.validator.use({
-      body: mw.validator.compile(
-        attributes.validator({
+      body: mw.validator.instance.compile<any>(
+        helpers.cognito.attributes.validator({
           type: "object",
           required: ["password", "email", "name"],
           properties: {
