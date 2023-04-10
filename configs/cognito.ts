@@ -1,4 +1,4 @@
-import { project } from "@configs/project";
+import { project } from "./project";
 
 export interface Cognito {
   region: string;

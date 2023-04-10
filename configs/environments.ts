@@ -1,5 +1,5 @@
-import { project } from "@configs/project";
-import { cognito } from "@configs/cognito";
+import { project } from "./project";
+import { cognito } from "./cognito";
 
 export const environments: { [name: string]: any } = {
   AWS_ACCOUNT_ID: process.env.AWS_ACCOUNT_ID || "",

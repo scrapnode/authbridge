@@ -3,7 +3,7 @@
     "baseUrl": ".",
     "paths": {
       "@data/*": ["data/*"],
-      "@configs/*": ["backend/configs/*"],
+      "@configs/*": ["configs/*"],
       "@functions/*": ["backend/functions/*"],
       "@libs/*": ["backend/libs/*"],
       "@domain/*": ["backend/domain/*"],
