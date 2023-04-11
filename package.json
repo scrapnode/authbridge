@@ -4,7 +4,10 @@
   "description": "Spend less time on identity verification and more on building with AuthBridge's quick start options ",
   "main": "serverless.ts",
   "scripts": {
-    "hook:before:package:initialize": "bash scripts/openapi-gen.sh",
+    "hook:after:deploy:finalize": "npm run deploy:openapi",
+    "deploy:openapi": "bash scripts/openapi-gen.sh && bash scripts/openapi-deploy.sh",
+    "hook:before:remove:remove": "npm run remove:openapi",
+    "remove:openapi": "bash scripts/openapi-remove.sh",
     "serve:openapi": "npm run hook:before:package:initialize && serve openapi/dist"
   },
   "engines": {
@@ -21,6 +24,7 @@
     "handlebars": "^4.7.7",
     "lodash": "^4.17.21",
     "pino": "^8.11.0",
+    "serverless-hooks": "^1.0.0",
     "yamljs": "^0.3.0"
   },
   "devDependencies": {
@@ -33,8 +37,6 @@
     "serve": "^14.2.0",
     "serverless": "^3.0.0",
     "serverless-esbuild": "^1.23.3",
-    "serverless-hooks": "^1.0.0",
-    "serverless-s3-sync": "^3.1.0",
     "ts-node": "^10.4.0",
     "tsconfig-paths": "^3.9.0",
     "typescript": "^4.1.3"

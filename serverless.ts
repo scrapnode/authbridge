@@ -9,7 +9,7 @@ import attributes from "@data/cognito-attributes.json";
 const serverlessConfiguration: AWS = {
   service: configs.project.name.toLowerCase(),
   frameworkVersion: "3",
-  plugins: ["serverless-esbuild", "serverless-hooks", "serverless-s3-sync"],
+  plugins: ["serverless-esbuild", "serverless-hooks"],
   provider: {
     name: "aws",
     stage: process.env.SLS_STAGE || "dev",
@@ -92,14 +92,6 @@ const serverlessConfiguration: AWS = {
       platform: "node",
       concurrency: 10,
     },
-    s3Sync: [
-      {
-        bucketName: configs.openapi.bucket.name,
-        localDir: "./openapi/dist",
-        // optional, indicates whether sync deletes files no longer present in localDir. Defaults to 'true'
-        deleteRemoved: true,
-      },
-    ],
   },
   resources: {
     Resources: {
@@ -157,31 +149,6 @@ const serverlessConfiguration: AWS = {
           BucketName: configs.openapi.bucket.name,
           WebsiteConfiguration: {
             IndexDocument: "index.html",
-          },
-        },
-      },
-      S3OpenAPIPolicy: {
-        Type: "AWS::S3::BucketPolicy",
-        DependsOn: ["S3OpenAPI"],
-        Properties: {
-          Bucket: { Ref: "S3OpenAPI" },
-          PolicyDocument: {
-            Statement: [
-              {
-                Sid: "PublicReadGetObject",
-                Effect: "Allow",
-                Principal: "*",
-                Action: ["s3:GetObject"],
-                Resource: [
-                  {
-                    "Fn::Join": [
-                      "",
-                      ["arn:aws:s3:::", { Ref: "S3OpenAPI" }, "/*"],
-                    ],
-                  },
-                ],
-              },
-            ],
           },
         },
       },
