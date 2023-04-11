@@ -145,10 +145,41 @@ const serverlessConfiguration: AWS = {
       S3OpenAPI: {
         Type: "AWS::S3::Bucket",
         Properties: {
-          AccessControl: "PublicRead",
           BucketName: configs.openapi.bucket.name,
           WebsiteConfiguration: {
             IndexDocument: "index.html",
+          },
+          OwnershipControls: {
+            Rules: [
+              {
+                ObjectOwnership: "BucketOwnerEnforced",
+              },
+            ],
+          },
+        },
+      },
+      S3OpenAPIPolicy: {
+        Type: "AWS::S3::BucketPolicy",
+        DependsOn: ["S3OpenAPI"],
+        Properties: {
+          Bucket: { Ref: "S3OpenAPI" },
+          PolicyDocument: {
+            Statement: [
+              {
+                Sid: "PublicReadGetObject",
+                Effect: "Allow",
+                Principal: "*",
+                Action: ["s3:GetObject"],
+                Resource: [
+                  {
+                    "Fn::Join": [
+                      "",
+                      ["arn:aws:s3:::", { Ref: "S3OpenAPI" }, "/*"],
+                    ],
+                  },
+                ],
+              },
+            ],
           },
         },
       },
