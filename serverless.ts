@@ -157,6 +157,8 @@ const serverlessConfiguration: AWS = {
             ],
           },
           PublicAccessBlockConfiguration: {
+            // if OwnershipControls is BucketOwnerEnforced
+            // we need to disable this setting to allow setup S3OpenAPIPolicy
             BlockPublicPolicy: false,
           },
         },
