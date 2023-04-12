@@ -9,6 +9,6 @@ export interface OpenAPI {
 const prefix = project.name.toLowerCase();
 export const openapi: OpenAPI = {
   bucket: {
-    name: `${prefix}.${project.domain}`,
+    name: `openapi-${prefix}.${project.domain}`,
   },
 };

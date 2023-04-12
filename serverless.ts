@@ -156,6 +156,9 @@ const serverlessConfiguration: AWS = {
               },
             ],
           },
+          PublicAccessBlockConfiguration: {
+            BlockPublicPolicy: false,
+          },
         },
       },
       S3OpenAPIPolicy: {
