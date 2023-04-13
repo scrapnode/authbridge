@@ -188,6 +188,52 @@ const serverlessConfiguration: AWS = {
           },
         },
       },
+      S3Frontend: {
+        Type: "AWS::S3::Bucket",
+        Properties: {
+          BucketName: configs.frontend.bucket.name,
+          WebsiteConfiguration: {
+            IndexDocument: "index.html",
+          },
+          OwnershipControls: {
+            Rules: [
+              {
+                ObjectOwnership: "BucketOwnerEnforced",
+              },
+            ],
+          },
+          PublicAccessBlockConfiguration: {
+            // if OwnershipControls is BucketOwnerEnforced
+            // we need to disable this setting to allow setup S3FrontendPolicy
+            BlockPublicPolicy: false,
+          },
+        },
+      },
+      S3FrontendPolicy: {
+        Type: "AWS::S3::BucketPolicy",
+        DependsOn: ["S3Frontend"],
+        Properties: {
+          Bucket: { Ref: "S3Frontend" },
+          PolicyDocument: {
+            Statement: [
+              {
+                Sid: "PublicReadGetObject",
+                Effect: "Allow",
+                Principal: "*",
+                Action: ["s3:GetObject"],
+                Resource: [
+                  {
+                    "Fn::Join": [
+                      "",
+                      ["arn:aws:s3:::", { Ref: "S3Frontend" }, "/*"],
+                    ],
+                  },
+                ],
+              },
+            ],
+          },
+        },
+      },
     },
   },
 };
