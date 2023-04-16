@@ -2,7 +2,7 @@ import {
   InitiateAuthCommandInput,
   InitiateAuthCommandOutput,
 } from "@aws-sdk/client-cognito-identity-provider";
-import cfg from "@configs/index";
+import configs from "@backend/configs";
 
 export interface Req {
   email: string;
@@ -19,7 +19,7 @@ export interface Res {
 
 export function fromRequest(req: Req): InitiateAuthCommandInput {
   return {
-    ClientId: cfg.cognito.client.id,
+    ClientId: configs.backend.cognito.client.id,
     AuthFlow: "USER_PASSWORD_AUTH",
     AuthParameters: {
       USERNAME: req.email,

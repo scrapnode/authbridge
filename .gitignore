@@ -140,4 +140,7 @@ dist
 .idea
 
 # Project
+.cf
+backend/configs.json
+backend/configs.map.json
 openapi/**/*.json

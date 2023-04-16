@@ -1,5 +1,5 @@
 import { MiddlewareObj } from "@middy/core";
-import { logger } from "@libs/logger";
+import { logger } from "@backend/libs/logger";
 
 export function use(): MiddlewareObj {
   return {

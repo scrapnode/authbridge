@@ -1,12 +1,9 @@
 import { ProxyResult, Handler, APIGatewayEvent } from "aws-lambda";
 import middy from "@middy/core";
 import _ from "lodash";
-import cfg from "@configs/index";
-import * as mw from "@functions/middlewares";
-import * as cognito from "@libs/cognito";
-import { error401, ok } from "@libs/response";
-
-const getUser = cognito.withUser(cfg.cognito);
+import * as mw from "@backend/functions/middlewares";
+import * as cognito from "@backend/libs/cognito";
+import { error401, ok } from "@backend/libs/response";
 
 const get: Handler<APIGatewayEvent, ProxyResult> = async (event) => {
   const sub = _.get(event, "requestContext.authorizer.jwt.claims.sub");
@@ -14,7 +11,7 @@ const get: Handler<APIGatewayEvent, ProxyResult> = async (event) => {
     return error401();
   }
 
-  const user = await getUser(sub);
+  const user = await cognito.user(sub);
   return ok(user);
 };
 

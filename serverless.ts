@@ -1,9 +1,9 @@
 require("dotenv").config();
 import type { AWS } from "@serverless/typescript";
 
-import configs from "@configs/index";
-import { environments } from "@configs/environments";
-import functions from "@functions/index";
+import configs from "@backend/configs";
+import functions from "@backend/functions/index";
+import environments from "@backend/environments.json";
 import attributes from "@data/cognito-attributes.json";
 
 const serverlessConfiguration: AWS = {
@@ -13,7 +13,7 @@ const serverlessConfiguration: AWS = {
   provider: {
     name: "aws",
     stage: process.env.SLS_STAGE || "dev",
-    region: configs.project.region as any,
+    region: configs.aws.region as any,
     tags: {
       project: configs.project.name,
     },
@@ -28,7 +28,7 @@ const serverlessConfiguration: AWS = {
                 "",
                 [
                   "arn:aws:cognito-idp:",
-                  configs.project.region,
+                  { Ref: "AWS::Region" },
                   ":",
                   { Ref: "AWS::AccountId" },
                   ":userpool/",
@@ -64,7 +64,7 @@ const serverlessConfiguration: AWS = {
               "",
               [
                 "https://cognito-idp.",
-                configs.project.region,
+                { Ref: "AWS::Region" },
                 ".amazonaws.com/",
                 { Ref: "UserPool" },
               ],
@@ -98,7 +98,7 @@ const serverlessConfiguration: AWS = {
       UserPool: {
         Type: "AWS::Cognito::UserPool",
         Properties: {
-          UserPoolName: configs.cognito.pool.name,
+          UserPoolName: configs.backend.cognito.pool.name,
           UsernameAttributes: ["email"],
           AutoVerifiedAttributes: ["email"],
           Policies: {
@@ -125,14 +125,14 @@ const serverlessConfiguration: AWS = {
         DependsOn: ["UserPool"],
         Properties: {
           UserPoolId: { Ref: "UserPool" },
-          Domain: configs.cognito.domain.name,
+          Domain: configs.backend.cognito.domain.name,
         },
       },
       UserPoolClient: {
         Type: "AWS::Cognito::UserPoolClient",
         DependsOn: ["UserPool"],
         Properties: {
-          ClientName: configs.cognito.client.name,
+          ClientName: configs.backend.cognito.client.name,
           UserPoolId: { Ref: "UserPool" },
           GenerateSecret: false,
           AccessTokenValidity: 24,

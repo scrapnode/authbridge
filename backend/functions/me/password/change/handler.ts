@@ -2,14 +2,11 @@ import { ProxyResult, Handler } from "aws-lambda";
 import { ChangePasswordCommand } from "@aws-sdk/client-cognito-identity-provider";
 import middy from "@middy/core";
 import json, { Event } from "@middy/http-json-body-parser";
-import cfg from "@configs/index";
-import { ok } from "@libs/response";
-import * as mw from "@functions/middlewares";
-import * as cognito from "@libs/cognito";
-import * as helpers from "@helpers/index";
+import { ok } from "@backend/libs/response";
+import * as mw from "@backend/functions/middlewares";
+import * as cognito from "@backend/libs/cognito";
+import * as helpers from "@backend/helpers/index";
 import { fromRequest, toResponse } from "./transform";
-
-const client = cognito.client(cfg.cognito);
 
 const change: Handler<Event, ProxyResult> = async (event) => {
   const input = fromRequest(
@@ -17,7 +14,7 @@ const change: Handler<Event, ProxyResult> = async (event) => {
     helpers.events.getAccessToken(event)
   );
   const cmd = new ChangePasswordCommand(input);
-  const output = await client.send(cmd);
+  const output = await cognito.client.send(cmd);
   return ok(toResponse(output));
 };
 

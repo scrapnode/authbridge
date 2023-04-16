@@ -1,9 +1,9 @@
-import { error400 } from "@libs/response";
+import { error400 } from "@backend/libs/response";
 import { MiddlewareObj } from "@middy/core";
 import { Event } from "@middy/http-json-body-parser";
 import Ajv, { ValidateFunction } from "ajv";
 import formats from "ajv-formats";
-import { logger } from "@libs/logger";
+import { logger } from "@backend/libs/logger";
 
 export const instance = new Ajv({
   strict: true,

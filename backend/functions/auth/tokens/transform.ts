@@ -2,7 +2,7 @@ import {
   InitiateAuthCommandInput,
   InitiateAuthCommandOutput,
 } from "@aws-sdk/client-cognito-identity-provider";
-import cfg from "@configs/index";
+import configs from "@backend/configs";
 
 export interface Req {
   refresh_token: string;
@@ -18,7 +18,7 @@ export interface Res {
 
 export function fromRequest(req: Req): InitiateAuthCommandInput {
   return {
-    ClientId: cfg.cognito.client.id,
+    ClientId: configs.backend.cognito.client.id,
     AuthFlow: "REFRESH_TOKEN_AUTH",
     AuthParameters: {
       REFRESH_TOKEN: req.refresh_token,

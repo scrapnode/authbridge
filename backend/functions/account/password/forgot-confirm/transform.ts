@@ -2,7 +2,7 @@ import {
   ConfirmForgotPasswordCommandInput,
   ConfirmForgotPasswordCommandOutput,
 } from "@aws-sdk/client-cognito-identity-provider";
-import cfg from "@configs/index";
+import configs from "@backend/configs";
 
 export interface Req {
   code: string;
@@ -14,7 +14,7 @@ export interface Res {}
 
 export function fromRequest(req: Req): ConfirmForgotPasswordCommandInput {
   const input: ConfirmForgotPasswordCommandInput = {
-    ClientId: cfg.cognito.client.id,
+    ClientId: configs.backend.cognito.client.id,
     ConfirmationCode: req.code,
     Password: req.password,
     Username: req.email,

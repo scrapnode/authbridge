@@ -2,8 +2,8 @@ import {
   SignUpCommandInput,
   SignUpCommandOutput,
 } from "@aws-sdk/client-cognito-identity-provider";
-import { User } from "@domain/entities";
-import cfg from "@configs/index";
+import { User } from "@backend/domain/entities";
+import configs from "@backend/configs";
 
 export interface Req extends User {
   password: string;
@@ -16,7 +16,7 @@ export interface Res {
 
 export function fromRequest(req: Req): SignUpCommandInput {
   const input: SignUpCommandInput = {
-    ClientId: cfg.cognito.client.id,
+    ClientId: configs.backend.cognito.client.id,
     Username: req.email,
     Password: req.password,
     UserAttributes: [],

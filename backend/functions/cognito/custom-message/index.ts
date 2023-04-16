@@ -1,5 +1,5 @@
-import { handlerPath } from "@libs/helpers";
-import { cognito } from "@configs/cognito";
+import { handlerPath } from "@backend/libs/helpers";
+import configs from "@backend/configs";
 
 export default {
   "cognito-custom-message": {
@@ -7,7 +7,7 @@ export default {
     events: [
       {
         cognitoUserPool: {
-          pool: cognito.pool.name,
+          pool: configs.backend.cognito.pool.name,
           trigger: "CustomMessage" as any,
           existing: true,
         },

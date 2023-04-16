@@ -1,22 +1,20 @@
 import path from "path";
 import type { Handler, CustomMessageTriggerEvent } from "aws-lambda";
 import middy from "@middy/core";
-import * as mw from "@functions/middlewares";
-import cfg from "@configs/index";
-import * as cognito from "@libs/cognito";
-import { Template } from "@libs/template";
+import * as mw from "@backend/functions/middlewares";
+import configs from "@backend/configs";
+import { Template } from "@backend/libs/template";
 
 import { useSignUp } from "./signup";
 import { useForgotPassowrd } from "./forgot-password";
 
 const template = new Template(
   path.resolve(__dirname, "../../../../templates"),
-  { project: cfg.project }
+  { project: configs.project }
 );
-const getUser = cognito.withUser(cfg.cognito);
 
-const signup = useSignUp(template, getUser);
-const forgotPassowrd = useForgotPassowrd(template, getUser);
+const signup = useSignUp(template);
+const forgotPassowrd = useForgotPassowrd(template);
 
 const customMessage: Handler<CustomMessageTriggerEvent> = async (
   event,

@@ -1,7 +1,7 @@
 import pino from "pino";
-import { project } from "@configs/project";
+import configs from "@backend/configs";
 
 export const logger = pino({
-  name: project.name,
-  level: project.debug ? "trace" : "info",
+  name: configs.project.name,
+  level: configs.project.env === "development" ? "trace" : "info",
 });

@@ -1,21 +1,18 @@
 import type { CustomMessageSignUpTriggerEvent, Context } from "aws-lambda";
-import cfg from "@configs/index";
-import { Template } from "@libs/template";
-import { User } from "@domain/entities";
+import configs from "@backend/configs";
+import { Template } from "@backend/libs/template";
+import * as cognito from "@backend/libs/cognito";
 
-export function useSignUp(
-  template: Template,
-  getUser: (username: string) => Promise<User>
-) {
+export function useSignUp(template: Template) {
   return async function signup(
     event: CustomMessageSignUpTriggerEvent,
     context: Context
   ): Promise<CustomMessageSignUpTriggerEvent> {
-    event.response.emailSubject = `${cfg.project.name} Account Confirmation`;
+    event.response.emailSubject = `${configs.project.name} Account Confirmation`;
     event.response.emailMessage = await template.render(event.triggerSource, {
       event,
       context,
-      user: await getUser(event.userName),
+      user: await cognito.user(event.userName),
     });
 
     return event;
