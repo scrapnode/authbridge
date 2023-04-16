@@ -1,0 +1,1 @@
+{ "project": { "name": "AuthBridge", "env": "development" }, "frontend": { "bucket": { "name": "authbridge" }, "api": { "endpoint": "https://ffyjtndk9a.execute-api.us-east-2.amazonaws.com" } } }

@@ -1,6 +1,7 @@
 import * as React from "react";
 import Link from "@mui/material/Link";
 import Typography from "@mui/material/Typography";
+import configs from "../configs.json";
 
 export default function Copyright() {
   const year = new Date().getFullYear();
@@ -13,8 +14,8 @@ export default function Copyright() {
       sx={{ mt: 8, mb: 4 }}
     >
       {"Copyright © "}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
+      <Link color="inherit" href="/">
+        {configs.project.name}
       </Link>
       {` ${year}.`}
     </Typography>
