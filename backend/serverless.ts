@@ -6,13 +6,26 @@ import functions from "@functions/index";
 import attributes from "@custom/cognito/attributes.json";
 
 const serverlessConfiguration: AWS = {
-  service: configs.project.id,
+  service: `${configs.project.id}-backend`,
   frameworkVersion: "3",
   plugins: ["serverless-esbuild"],
   provider: {
     name: "aws",
-    stage: process.env.SLS_STAGE || "dev",
+    stage: configs.project.stage || "dev",
     region: configs.aws.region as any,
+    runtime: "nodejs16.x",
+    apiGateway: {
+      minimumCompressionSize: 1024,
+      shouldStartNameWithService: true,
+    },
+    environment: {
+      AWS_NODEJS_CONNECTION_REUSE_ENABLED: "1",
+      NODE_OPTIONS: "--enable-source-maps --stack-trace-limit=1000",
+      BACKEND_COGNITO_POOL_ID: { Ref: "UserPool" },
+      BACKEND_COGNITO_CLIENT_ID: { Ref: "UserPoolClient" },
+    },
+    logRetentionInDays: 30,
+    timeout: 25,
     iam: {
       role: {
         statements: [
@@ -36,19 +49,6 @@ const serverlessConfiguration: AWS = {
         ],
       },
     },
-    runtime: "nodejs16.x",
-    apiGateway: {
-      minimumCompressionSize: 1024,
-      shouldStartNameWithService: true,
-    },
-    environment: {
-      AWS_NODEJS_CONNECTION_REUSE_ENABLED: "1",
-      NODE_OPTIONS: "--enable-source-maps --stack-trace-limit=1000",
-      BACKEND_COGNITO_POOL_ID: { Ref: "UserPool" },
-      BACKEND_COGNITO_CLIENT_ID: { Ref: "UserPoolClient" },
-    },
-    logRetentionInDays: 30,
-    timeout: 25,
     httpApi: {
       cors: true,
       authorizers: {

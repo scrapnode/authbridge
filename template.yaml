@@ -3,8 +3,8 @@ aws:
 project:
   id: authbridge
   name: AuthBridge
-backend:
   stage: dev
+backend:
   cognito:
     pool:
       name: authbridge
@@ -12,7 +12,9 @@ backend:
       name: backend
 frontend:
   s3:
-    bucket_name: authbridge
+    bucket:
+      name: authbridge
 openapi:
   s3:
-    bucket_name: authbridge-openapi
+    bucket:
+      name: authbridge-openapi

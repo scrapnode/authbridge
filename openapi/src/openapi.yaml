@@ -1,13 +1,13 @@
 openapi: 3.0.0
 info:
   version: 1.0.0
-  title: __PROJECT_NAME__
+  title: "{{ project.name }}"
   description: Spend less time on identity verification and more on building with AuthBridge's quick start options
   license:
     name: Apache 2.0
     url: http://www.apache.org/licenses/LICENSE-2.0.html
 servers:
-  - url: __API_ENDPOINT__
+  - url: "{{ backend.endpoint }}"
 paths:
   /dev/ping:
     get:

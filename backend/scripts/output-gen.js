@@ -6,16 +6,13 @@ const {
   DescribeStacksCommand,
 } = require("@aws-sdk/client-cloudformation");
 
-const template = require(path.resolve(
-  __dirname,
-  "../src/configs/template.json"
-));
+const template = require(path.resolve(__dirname, "../src/configs.json"));
 const client = new CloudFormationClient({ region: template.aws.region });
 
 main().then(() => setTimeout(process.exit, 1000));
 
 async function main() {
-  const name = `${template.project.id}-${template.backend.stage}`;
+  const name = `${template.project.id}-backend-${template.project.stage}`;
   const stacks = await client.send(
     new DescribeStacksCommand({ StackName: name })
   );
@@ -29,7 +26,7 @@ async function main() {
         .OutputValue,
     },
   };
-  const outputPath = path.resolve(__dirname, "../output.json");
+  const outputPath = path.resolve(__dirname, "../.output.json");
   await fs.promises.writeFile(
     outputPath,
     JSON.stringify(output, null, 2),

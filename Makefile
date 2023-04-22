@@ -1,8 +1,14 @@
 template:
 	node scripts/template-build.js
 
-deploy-backend: template
+backend-deploy: template
 	$(MAKE) -f backend/Makefile deploy
 
-destroy-backend:
+backend-destroy:
 	$(MAKE) -f backend/Makefile destroy 
+	
+openapi-deploy: template
+	$(MAKE) -f openapi/Makefile deploy
+	
+openapi-destroy:
+	$(MAKE) -f openapi/Makefile destroy 

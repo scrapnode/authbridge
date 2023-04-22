@@ -3,7 +3,7 @@
     "baseUrl": ".",
     "paths": {
       "@custom/*": ["custom/*"],
-      "@configs": ["src/configs/index.ts"],
+      "@configs": ["src/configs.json"],
       "@domain/*": ["src/domain/*"],
       "@functions/*": ["src/functions/*"],
       "@libs/*": ["src/libs/*"]

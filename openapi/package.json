@@ -1,23 +1,27 @@
 {
-  "name": "@scrapnode/authbridge",
+  "name": "@scrapnode/authbridge-openapi",
   "version": "1.0.0",
   "description": "Spend less time on identity verification and more on building with AuthBridge's quick start options",
+  "main": "index.js",
   "engines": {
     "node": ">=16.16.0"
   },
+  "author": "Tuan Nguyen <tuan.nguyen930708@gmail.com>",
+  "license": "Apache-2.0",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/scrapnode/authbridge.git"
   },
-  "author": "Tuan Nguyen <tuan.nguyen930708@gmail.com>",
-  "license": "Apache-2.0",
   "bugs": {
     "url": "https://github.com/scrapnode/authbridge/issues"
   },
   "homepage": "https://github.com/scrapnode/authbridge#readme",
-  "scripts": {},
+  "scripts": {
+    "build": "node ./scripts/build.js"
+  },
   "dependencies": {
     "dotenv": "^16.0.3",
+    "handlebars": "^4.7.7",
     "js-yaml": "^4.1.0"
   }
 }
