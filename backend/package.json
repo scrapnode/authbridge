@@ -1,0 +1,47 @@
+{
+  "name": "@scrapnode/authbridge",
+  "version": "1.0.0",
+  "description": "Spend less time on identity verification and more on building with AuthBridge's quick start options",
+  "main": "serverless.ts",
+  "scripts": {},
+  "engines": {
+    "node": ">=16.16.0"
+  },
+  "dependencies": {
+    "@aws-sdk/client-cognito-identity-provider": "^3.294.0",
+    "@middy/core": "^3.6.2",
+    "@middy/http-error-handler": "^4.2.7",
+    "@middy/http-json-body-parser": "^3.6.2",
+    "ajv": "^8.12.0",
+    "ajv-formats": "^2.1.1",
+    "dotenv": "^16.0.3",
+    "handlebars": "^4.7.7",
+    "lodash": "^4.17.21",
+    "pino": "^8.11.0",
+    "yamljs": "^0.3.0"
+  },
+  "devDependencies": {
+    "@serverless/typescript": "^3.0.0",
+    "@types/aws-lambda": "^8.10.71",
+    "@types/mustache": "^4.2.2",
+    "@types/node": "^14.14.25",
+    "esbuild": "^0.14.11",
+    "json-schema-to-ts": "^1.5.0",
+    "serve": "^14.2.0",
+    "serverless": "^3.0.0",
+    "serverless-esbuild": "^1.23.3",
+    "ts-node": "^10.4.0",
+    "tsconfig-paths": "^3.9.0",
+    "typescript": "^4.1.3"
+  },
+  "author": "Tuan Nguyen <tuan.nguyen930708@gmail.com>",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/scrapnode/authbridge.git"
+  },
+  "bugs": {
+    "url": "https://github.com/scrapnode/authbridge/issues"
+  },
+  "homepage": "https://github.com/scrapnode/authbridge#readme"
+}

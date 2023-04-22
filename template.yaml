@@ -1,0 +1,18 @@
+aws:
+  region: us-east-2
+project:
+  id: authbridge
+  name: AuthBridge
+backend:
+  stage: dev
+  cognito:
+    pool:
+      name: authbridge
+    client:
+      name: backend
+frontend:
+  s3:
+    bucket_name: authbridge
+openapi:
+  s3:
+    bucket_name: authbridge-openapi
