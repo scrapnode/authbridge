@@ -7,10 +7,17 @@ cleanup:
 
 prepare: cleanup
 	cp -r $(ROOT_DIR)/../custom $(ROOT_DIR)/custom;
-	cp -r $(ROOT_DIR)/../template.json $(ROOT_DIR)/src/configs/template.json;
+	jq 'del(.frontend, .openapi)' $(ROOT_DIR)/../template.json > $(ROOT_DIR)/src/configs/template.json;
 
 deploy: prepare
-	cd $(ROOT_DIR) && sls deploy && cd $(CURRENT_DIR)
+	cd $(ROOT_DIR) && sls deploy && cd $(CURRENT_DIR);
 
 destroy:
-	cd $(ROOT_DIR) && sls remove && cd $(CURRENT_DIR)
+	cd $(ROOT_DIR) && sls remove || true && cd $(CURRENT_DIR);
+	rm -rf $(ROOT_DIR)/.serverless
+
+output: prepare
+ifeq (,$(wildcard $(ROOT_DIR)/.serverless/serverless-state.json))
+		$(MAKE) -f $(ROOT_DIR)/Makefile deploy;
+endif
+	node $(ROOT_DIR)/scripts/output-gen.js;

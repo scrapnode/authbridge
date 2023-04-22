@@ -8,6 +8,7 @@
     "node": ">=16.16.0"
   },
   "dependencies": {
+    "@aws-sdk/client-cloudformation": "^3.316.0",
     "@aws-sdk/client-cognito-identity-provider": "^3.294.0",
     "@middy/core": "^3.6.2",
     "@middy/http-error-handler": "^4.2.7",
@@ -17,8 +18,7 @@
     "dotenv": "^16.0.3",
     "handlebars": "^4.7.7",
     "lodash": "^4.17.21",
-    "pino": "^8.11.0",
-    "yamljs": "^0.3.0"
+    "pino": "^8.11.0"
   },
   "devDependencies": {
     "@serverless/typescript": "^3.0.0",

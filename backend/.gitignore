@@ -132,3 +132,4 @@ dist
 # Project
 custom/**/*
 src/template.json
+output.json
