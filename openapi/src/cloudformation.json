@@ -49,14 +49,14 @@
   "Outputs": {
     "WebsiteURL": {
       "Value": {
-        "Fn::GetAtt": ["S3Bucket", "WebsiteURL"]
+        "Fn::GetAtt": ["S3OpenAPI", "WebsiteURL"]
       }
     },
     "S3BucketSecureURL": {
       "Value": {
         "Fn::Join": [
           "",
-          ["https://", { "Fn::GetAtt": ["S3Bucket", "DomainName"] }]
+          ["https://", { "Fn::GetAtt": ["S3OpenAPI", "DomainName"] }]
         ]
       }
     }

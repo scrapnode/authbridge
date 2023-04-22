@@ -16,7 +16,7 @@ endif
 	cd $(ROOT_DIR) && npm install && npm run build && cd $(CURRENT_DIR);
 
 deploy: prepare
-	aws cloudformation deploy --region $(AWS_REGION) --stack-name $(STACK_NAME) --template-file $(ROOT_DIR)/.cloudformation.json > $(ROOT_DIR)/cloudformation.stack.json
+	aws cloudformation deploy --region $(AWS_REGION) --stack-name $(STACK_NAME) --template-file $(ROOT_DIR)/.cloudformation.json > $(ROOT_DIR)/.cloudformation.stack.json
 	aws cloudformation wait stack-exists --region $(AWS_REGION) --stack-name $(STACK_NAME)
 	aws s3 sync $(ROOT_DIR)/build s3://$(BUCKET_NAME) --delete --exclude "*" --include "*.html" --include "*.json"
 
