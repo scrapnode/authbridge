@@ -51,14 +51,6 @@
       "Value": {
         "Fn::GetAtt": ["S3OpenAPI", "WebsiteURL"]
       }
-    },
-    "S3BucketSecureURL": {
-      "Value": {
-        "Fn::Join": [
-          "",
-          ["https://", { "Fn::GetAtt": ["S3OpenAPI", "DomainName"] }]
-        ]
-      }
     }
   }
 }
