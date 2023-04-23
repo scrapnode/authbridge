@@ -21,7 +21,7 @@ deploy: prepare
 	aws s3 sync $(ROOT_DIR)/build s3://$(BUCKET_NAME) --delete --exclude "*" --include "*.html" --include "*.json"
 
 destroy:
+	aws s3 rm --recursive s3://$(BUCKET_NAME)
 	aws cloudformation delete-stack --region $(AWS_REGION) --stack-name $(STACK_NAME)
 	aws cloudformation wait stack-delete-complete --region $(AWS_REGION) --stack-name $(STACK_NAME)
-	rm -rf $(ROOT_DIR)/.cloudformation.json
-	rm -rf $(ROOT_DIR)/cloudformation.stack.json
+	rm -rf $(ROOT_DIR)/.cloudformation.jsonn
