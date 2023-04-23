@@ -10,17 +10,29 @@ backend:
       id: ""
     aliases: []
     acm:
-      arn: ""
+      arn:
   cognito:
     pool:
       name: authbridge
     client:
       name: backend
 frontend:
+  domain:
+    zone:
+      id: ""
+    aliases: []
+    acm:
+      arn:
   s3:
     bucket:
       name: authbridge
 openapi:
+  domain:
+    zone:
+      id: ""
+    aliases: []
+    acm:
+      arn:
   s3:
     bucket:
       name: authbridge-openapi

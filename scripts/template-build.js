@@ -10,7 +10,7 @@ const input = fs.readFileSync(inputPath, { encoding: "utf-8" });
 const output = yaml.load(input);
 setByEnv(output);
 
-const outputpath = path.resolve(__dirname, "../template.json");
+const outputpath = path.resolve(__dirname, "../.template.json");
 fs.writeFileSync(outputpath, JSON.stringify(output, null, 2), "utf-8");
 
 function setByEnv(output, envPrefix, propPrefix) {

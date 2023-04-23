@@ -11,7 +11,7 @@ prepare: cleanup
 ifeq (,$(wildcard $(ROOT_DIR)/../backend/.output.json))
 		$(MAKE) -f $(ROOT_DIR)/../backend/Makefile output;
 endif
-	jq 'del(.frontend, .backend)' $(ROOT_DIR)/../template.json > /tmp/authbridge-openapi.configs.json;
+	jq 'del(.frontend, .backend)' $(ROOT_DIR)/../.template.output.json > /tmp/authbridge-openapi.configs.json;
 	jq -s '.[0] * .[1]' $(ROOT_DIR)/../backend/.output.json /tmp/authbridge-openapi.configs.json > $(ROOT_DIR)/src/configs.json
 	cd $(ROOT_DIR) && npm install && npm run build && cd $(CURRENT_DIR);
 

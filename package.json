@@ -17,7 +17,11 @@
   "homepage": "https://github.com/scrapnode/authbridge#readme",
   "scripts": {},
   "dependencies": {
+    "@aws-sdk/client-cloudformation": "^3.316.0",
     "dotenv": "^16.0.3",
-    "js-yaml": "^4.1.0"
+    "js-yaml": "^4.1.0",
+    "lodash.get": "^4.4.2",
+    "lodash.minby": "^4.6.0",
+    "lodash.set": "^4.3.2"
   }
 }

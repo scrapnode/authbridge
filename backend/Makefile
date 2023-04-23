@@ -7,7 +7,7 @@ cleanup:
 
 prepare: cleanup
 	cp -r $(ROOT_DIR)/../custom $(ROOT_DIR)/custom;
-	jq 'del(.frontend, .openapi)' $(ROOT_DIR)/../template.json > $(ROOT_DIR)/src/configs.json;
+	jq 'del(.frontend, .openapi)' $(ROOT_DIR)/../.template.output.json > $(ROOT_DIR)/src/configs.json;
 
 deploy: prepare
 	cd $(ROOT_DIR) && npm install && sls deploy && cd $(CURRENT_DIR);
