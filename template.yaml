@@ -5,6 +5,12 @@ project:
   name: AuthBridge
   stage: dev
 backend:
+  domain:
+    zone:
+      id: ""
+    aliases: []
+    acm:
+      arn: ""
   cognito:
     pool:
       name: authbridge

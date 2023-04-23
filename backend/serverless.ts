@@ -131,6 +131,91 @@ const serverlessConfiguration: AWS = {
           ],
         },
       },
+      CloudFrontDistribution: {
+        Type: "AWS::CloudFront::Distribution",
+        DeletionPolicy: "Delete",
+        Properties: {
+          DistributionConfig: {
+            Enabled: true,
+            PriceClass: "PriceClass_100",
+            HttpVersion: "http2",
+            Comment: `Api distribution for ${configs.backend.domain.aliases}`,
+            Origins: [
+              {
+                Id: "ApiGateway",
+                DomainName: {
+                  "Fn::Join": [
+                    "",
+                    [
+                      { Ref: "HttpApi" },
+                      ".execute-api.",
+                      { Ref: "AWS::Region" },
+                      ".amazonaws.com",
+                    ],
+                  ],
+                },
+                OriginPath: "",
+                CustomOriginConfig: {
+                  HTTPPort: 80,
+                  HTTPSPort: 443,
+                  OriginProtocolPolicy: "https-only",
+                  OriginSSLProtocols: ["TLSv1", "TLSv1.1", "TLSv1.2"],
+                },
+              },
+            ],
+            DefaultCacheBehavior: {
+              TargetOriginId: "ApiGateway",
+              ViewerProtocolPolicy: "redirect-to-https",
+              Compress: true,
+              DefaultTTL: 0,
+              AllowedMethods: [
+                "HEAD",
+                "DELETE",
+                "POST",
+                "GET",
+                "OPTIONS",
+                "PUT",
+                "PATCH",
+              ],
+              CachedMethods: ["HEAD", "OPTIONS", "GET"],
+              ForwardedValues: {
+                QueryString: false,
+                Headers: ["Accept", "x-api-key", "Authorization"],
+                Cookies: {
+                  Forward: "none",
+                },
+              },
+            },
+            Aliases: configs.backend.domain.aliases,
+            ViewerCertificate: {
+              SslSupportMethod: "sni-only",
+              MinimumProtocolVersion: "TLSv1.2_2019",
+              AcmCertificateArn: configs.backend.domain.acm.arn,
+            },
+          },
+        },
+      },
+      Route53RecordSetGroup: {
+        Type: "AWS::Route53::RecordSetGroup",
+        DeletionPolicy: "Delete",
+        DependsOn: ["CloudFrontDistribution"],
+        Properties: {
+          HostedZoneId: configs.backend.domain.zone.id,
+          RecordSets: configs.backend.domain.aliases.map((alias) => ({
+            Name: alias,
+            Type: "A",
+            AliasTarget: {
+              // with CloudFront distribution, when you create alias resource record sets,
+              // you must specify Z2FDTNDATAQYW2 for the HostedZoneId property, as shown in the following example.
+              // Alias resource record sets for CloudFront can't be created in a private zone.
+              HostedZoneId: "Z2FDTNDATAQYW2",
+              DNSName: {
+                "Fn::GetAtt": ["CloudFrontDistribution", "DomainName"],
+              },
+            },
+          })),
+        },
+      },
     },
   },
 };

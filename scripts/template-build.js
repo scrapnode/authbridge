@@ -20,7 +20,11 @@ function setByEnv(output, envPrefix, propPrefix) {
     const ENV = [envPrefix, ENV_KEY].filter(Boolean).join("_");
     const prop = [propPrefix, key].filter(Boolean).join(".");
 
-    if (output[key] && typeof output[key] === "object") {
+    const next =
+      output[key] &&
+      typeof output[key] === "object" &&
+      !Array.isArray(output[key]);
+    if (next) {
       setByEnv(output[key], ENV, prop); // it's a nested object, so do it again
     } else {
       // it's not an object, so set the property
@@ -28,8 +32,14 @@ function setByEnv(output, envPrefix, propPrefix) {
       console.log(`${prop} -> ${ENV} -> ${env}`);
       if (env) {
         switch (typeof output[key]) {
+          case "object":
+            if (Array.isArray(output[key])) {
+              output[key] = env.split(",").map((e) => e.trim());
+            }
+            break;
           case "number":
             output[key] = Number(env);
+            break;
           case "boolean":
             output[key] = env.toLowerCase() === "true";
             break;
