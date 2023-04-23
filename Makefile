@@ -4,19 +4,21 @@ RESOURCES_STACK_NAME:=$(shell jq -r '.project.id' $(ROOT_DIR)/.template.json)-re
 template:
 	node $(ROOT_DIR)/scripts/template-build.js
 
-resources-deploy: template
+resources-cleanup: 
+	rm -rf $(ROOT_DIR)/.resources.json
+	rm -rf $(ROOT_DIR)/.resources.output.json
+	$(MAKE) -f Makefile prepare
+
+resources-deploy: template, resources-cleanup
 	node $(ROOT_DIR)/scripts/resources-build.js
 	# Certificate for CloudFront Distribution must be at us-east-1
 	aws cloudformation deploy --region us-east-1 --stack-name $(RESOURCES_STACK_NAME) --template-file $(ROOT_DIR)/.resources.json
 	aws cloudformation wait stack-exists --region us-east-1 --stack-name $(RESOURCES_STACK_NAME)
 	node $(ROOT_DIR)/scripts/resources-output-gen.js
 
-resources-destroy:
+resources-destroy: resources-cleanup
 	aws cloudformation delete-stack --region us-east-1 --stack-name $(RESOURCES_STACK_NAME)
 	aws cloudformation wait stack-delete-complete --region us-east-1 --stack-name $(RESOURCES_STACK_NAME)
-	rm -rf $(ROOT_DIR)/.resources.json
-	rm -rf $(ROOT_DIR)/.resources.output.json
-	$(MAKE) -f Makefile prepare
 
 all-deploy: backend-deploy openapi-deploy
 

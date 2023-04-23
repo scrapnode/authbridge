@@ -32,6 +32,7 @@ const output = {
       Type: "AWS::CertificateManager::Certificate",
       Properties: {
         DomainName: minBy(records, "alias.length").alias,
+        SubjectAlternativeNames: records.map(({ alias }) => alias),
         DomainValidationOptions: records.map(({ zone, alias }) => ({
           DomainName: alias,
           HostedZoneId: zone,

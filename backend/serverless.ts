@@ -160,7 +160,6 @@ function withCustomDomain(deployment: AWS): AWS {
   deployment.resources.Resources.CloudFrontDistribution = {
     Type: "AWS::CloudFront::Distribution",
     DeletionPolicy: "Delete",
-    DependsOn: ["Certificate"],
     Properties: {
       DistributionConfig: {
         Enabled: true,
