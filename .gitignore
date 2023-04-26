@@ -4,3 +4,4 @@ node_modules
 .env
 .template.*
 .resources.*
+src/configs.json

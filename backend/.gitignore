@@ -130,6 +130,5 @@ dist
 .pnp.*
 
 # Project
-src/configs.json
 custom/**/*
 .output.json

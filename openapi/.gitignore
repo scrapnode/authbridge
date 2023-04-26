@@ -130,5 +130,5 @@ dist
 .pnp.*
 
 # Project
-src/configs.json
-.cloudformation.*
+custom/**/*
+.output.json

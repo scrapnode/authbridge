@@ -243,5 +243,6 @@ function withCustomDomain(deployment: AWS): AWS {
       })),
     },
   };
+
   return deployment;
 }

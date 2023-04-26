@@ -11,7 +11,7 @@
   },
   "servers": [
     {
-      "url": "https://rp8mtnbkp4.execute-api.us-east-2.amazonaws.com"
+      "url": "https://api.authbridge.upmesh.live"
     }
   ],
   "paths": {

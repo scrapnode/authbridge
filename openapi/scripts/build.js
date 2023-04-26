@@ -9,21 +9,7 @@ const template = require(path.resolve(__dirname, "../src/configs.json"));
 main().then(() => setTimeout(process.exit, 1000));
 
 async function main() {
-  return Promise.all([
-    buildCloudFormationJSON(),
-    buildIndexHtml(),
-    buildOpenAPIJSON(),
-  ]);
-}
-
-async function buildCloudFormationJSON() {
-  const inputPath = path.resolve(__dirname, "../src/cloudformation.json");
-  const input = await fs.promises.readFile(inputPath, "utf8");
-  const render = compile(input);
-
-  const output = render(template);
-  const outputPath = path.resolve(__dirname, "../.cloudformation.json");
-  return fs.promises.writeFile(outputPath, output, "utf-8");
+  return Promise.all([buildIndexHtml(), buildOpenAPIJSON()]);
 }
 
 async function buildIndexHtml() {

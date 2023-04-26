@@ -26,6 +26,16 @@ async function main() {
         .OutputValue,
     },
   };
+
+  const hasDomain =
+    template.backend.domain?.acm?.arn &&
+    template.backend.domain?.zone?.id &&
+    Array.isArray(template.backend.domain?.aliases) &&
+    template.backend.domain.aliases.length > 0;
+  if (hasDomain) {
+    output.backend.endpoint = `https://${template.backend.domain.aliases[0]}`;
+  }
+
   const outputPath = path.resolve(__dirname, "../.output.json");
   await fs.promises.writeFile(
     outputPath,
