@@ -41,103 +41,168 @@ const deployment: AWS = {
     s3Sync: [
       {
         bucketName: configs.openapi.s3.bucket.name,
-        // @TODO: remove ACL when we have access point from cloudfront
-        acl: " public-read",
         localDir: "./build",
       },
     ],
   },
   resources: {
-    Resources: {
-      S3OpenAPI: {
-        Type: "AWS::S3::Bucket",
-        Properties: {
-          BucketName: configs.openapi.s3.bucket.name,
-          WebsiteConfiguration: {
-            IndexDocument: "index.html",
-          },
-          OwnershipControls: {
-            Rules: [
-              {
-                ObjectOwnership: "BucketOwnerPreferred",
-              },
-            ],
-          },
-          PublicAccessBlockConfiguration: {
-            BlockPublicPolicy: false,
-          },
-        },
-      },
-      S3OpenAPIPolicy: {
-        Type: "AWS::S3::BucketPolicy",
-        DependsOn: ["S3OpenAPI"],
-        Properties: {
-          Bucket: { Ref: "S3OpenAPI" },
-          PolicyDocument: {
-            Statement: [
-              {
-                Sid: "PublicReadGetObject",
-                Effect: "Allow",
-                Principal: "*",
-                Action: ["s3:GetObject"],
-                Resource: [
-                  {
-                    "Fn::Join": [
-                      "",
-                      ["arn:aws:s3:::", { Ref: "S3OpenAPI" }, "/*"],
-                    ],
-                  },
-                ],
-              },
-            ],
-          },
-        },
-      },
-    },
+    Resources: {},
   },
 };
 
-module.exports = withCustomDomain(deployment);
+module.exports = withCustomDomain(withDefault(deployment));
 
-function withCustomDomain(deployment: AWS): AWS {
-  if (!configs.openapi.domain?.acm?.arn) return deployment;
+function hasCustomDomain(): boolean {
+  if (!configs.openapi.domain?.acm?.arn) return false;
 
   if (!configs.openapi.domain?.zone?.id) {
     console.warn(`WARN: ACM ARN is set but no Zone ID is set`);
-    return deployment;
+    return false;
   }
   if (
     !Array.isArray(configs.openapi.domain?.aliases) ||
     configs.openapi.domain.aliases.length === 0
   ) {
     console.warn(`WARN: ACM ARN is set but no alias is set`);
-    return deployment;
+    return false;
   }
 
-  if (!deployment.resources?.Resources) {
-    _.set(deployment, "resources.Resources", {});
-  }
+  return true;
+}
 
-  // deployment.resources.Resources.CloudFrontOriginAccessIdentity = {
-  //   Type: "AWS::CloudFront::CloudFrontOriginAccessIdentity",
-  //   DeletionPolicy: "Delete",
-  //   DependsOn: ["S3OpenAPI"],
-  //   Properties: {
-  //     CloudFrontOriginAccessIdentityConfig: {
-  //       Comment: "Access S3 bucket content only through CloudFront",
-  //     },
-  //   },
-  // };
+function withDefault(deployment: AWS): AWS {
+  if (hasCustomDomain()) return deployment;
 
-  // @TODO: change S3 policy when we have access point from cloudfront
+  deployment.resources.Resources.S3OpenAPI = {
+    Type: "AWS::S3::Bucket",
+    Properties: {
+      BucketName: configs.openapi.s3.bucket.name,
+      WebsiteConfiguration: {
+        IndexDocument: "index.html",
+      },
+      OwnershipControls: {
+        Rules: [
+          {
+            ObjectOwnership: "BucketOwnerEnforced",
+          },
+        ],
+      },
+      PublicAccessBlockConfiguration: {
+        BlockPublicPolicy: false,
+      },
+    },
+  };
+
+  deployment.resources.Resources.S3OpenAPIPolicy = {
+    Type: "AWS::S3::BucketPolicy",
+    DependsOn: ["S3OpenAPI"],
+    Properties: {
+      Bucket: { Ref: "S3OpenAPI" },
+      PolicyDocument: {
+        Statement: [
+          {
+            Sid: "PublicReadGetObject",
+            Effect: "Allow",
+            Principal: "*",
+            Action: ["s3:GetObject"],
+            Resource: [
+              {
+                "Fn::Join": ["", ["arn:aws:s3:::", { Ref: "S3OpenAPI" }, "/*"]],
+              },
+            ],
+          },
+        ],
+      },
+    },
+  };
+
+  return deployment;
+}
+
+function withCustomDomain(deployment: AWS): AWS {
+  if (!hasCustomDomain()) return deployment;
+
+  deployment.resources.Resources.S3OpenAPI = {
+    Type: "AWS::S3::Bucket",
+    Properties: {
+      BucketName: configs.openapi.s3.bucket.name,
+      OwnershipControls: {
+        Rules: [
+          {
+            ObjectOwnership: "BucketOwnerEnforced",
+          },
+        ],
+      },
+      PublicAccessBlockConfiguration: {
+        BlockPublicAcls: true,
+        BlockPublicPolicy: true,
+        IgnorePublicAcls: true,
+        RestrictPublicBuckets: true,
+      },
+    },
+  };
+
+  deployment.resources.Resources.S3OpenAPIPolicy = {
+    Type: "AWS::S3::BucketPolicy",
+    DependsOn: ["S3OpenAPI"],
+    Properties: {
+      Bucket: { Ref: "S3OpenAPI" },
+      PolicyDocument: {
+        Statement: [
+          {
+            Sid: "CloudfrontGetObject",
+            Effect: "Allow",
+            Principal: {
+              Service: "cloudfront.amazonaws.com",
+            },
+            Action: ["s3:GetObject"],
+            Resource: [
+              {
+                "Fn::Join": ["", ["arn:aws:s3:::", { Ref: "S3OpenAPI" }, "/*"]],
+              },
+            ],
+            Condition: {
+              StringEquals: {
+                "AWS:SourceArn": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:aws:cloudfront::",
+                      { Ref: "AWS::AccountId" },
+                      ":distribution/",
+                      { Ref: "CloudFrontDistribution" },
+                    ],
+                  ],
+                },
+              },
+            },
+          },
+        ],
+      },
+    },
+  };
+
+  deployment.resources.Resources.CloudFrontOriginAccessControl = {
+    Type: "AWS::CloudFront::OriginAccessControl",
+    Properties: {
+      OriginAccessControlConfig: {
+        Description: "Default Origin Access Control",
+        Name: { Ref: "AWS::StackName" },
+        OriginAccessControlOriginType: "s3",
+        SigningBehavior: "always",
+        SigningProtocol: "sigv4",
+      },
+    },
+  };
 
   deployment.resources.Resources.CloudFrontDistribution = {
     Type: "AWS::CloudFront::Distribution",
+    DependsOn: ["CloudFrontOriginAccessControl"],
     DeletionPolicy: "Delete",
-    // DependsOn: ["CloudFrontOriginAccessIdentity"],
     Properties: {
       DistributionConfig: {
         Enabled: true,
+        DefaultRootObject: "index.html",
         PriceClass: "PriceClass_100",
         HttpVersion: "http2",
         Comment: `Api distribution for ${configs.openapi.domain.aliases}`,
@@ -149,31 +214,18 @@ function withCustomDomain(deployment: AWS): AWS {
                 "",
                 [
                   { Ref: "S3OpenAPI" },
-                  ".s3-website.",
+                  ".s3.",
                   { Ref: "AWS::Region" },
                   ".amazonaws.com",
                 ],
               ],
             },
             OriginPath: "",
-            // Use S3OriginConfig to specify an Amazon S3 bucket that is not configured with static website hosting.
-            // S3OriginConfig: {
-            //   OriginAccessIdentity: {
-            //     "Fn::Join": [
-            //       "",
-            //       [
-            //         "origin-access-identity/cloudfront/",
-            //         { Ref: "CloudFrontOriginAccessIdentity" },
-            //       ],
-            //     ],
-            //   },
-            // },
-            // Otherwise use CustomOriginConfig to specifict s3 website
-            CustomOriginConfig: {
-              OriginProtocolPolicy: "http-only",
-              HTTPPort: 80,
-              HTTPSPort: 443,
-              OriginSSLProtocols: ["TLSv1.2", "TLSv1.1", "TLSv1"],
+            S3OriginConfig: {
+              OriginAccessIdentity: "",
+            },
+            OriginAccessControlId: {
+              "Fn::GetAtt": ["CloudFrontOriginAccessControl", "Id"],
             },
           },
         ],
@@ -181,7 +233,7 @@ function withCustomDomain(deployment: AWS): AWS {
           TargetOriginId: "OpenAPIS3",
           ViewerProtocolPolicy: "redirect-to-https",
           Compress: true,
-          DefaultTTL: 0,
+          DefaultTTL: 60,
           AllowedMethods: ["HEAD", "OPTIONS", "GET"],
           CachedMethods: ["HEAD", "OPTIONS", "GET"],
           ForwardedValues: {
