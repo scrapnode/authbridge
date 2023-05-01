@@ -29,7 +29,7 @@ resources-destroy: resources-cleanup
 
 all-deploy:  resources-deploy backend-deploy openapi-deploy frontend-deploy
 
-all-destroy: openapi-destroy frontend-destroy backend-destroy resources-deploy
+all-destroy: openapi-destroy frontend-destroy backend-destroy resources-destroy
 
 backend-deploy: prepare
 	$(MAKE) -f backend/Makefile deploy
