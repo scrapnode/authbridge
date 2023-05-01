@@ -11,7 +11,7 @@
   },
   "servers": [
     {
-      "url": "https://api.authbridge.upmesh.live"
+      "url": "https://n6sg3etada.execute-api.us-east-2.amazonaws.com"
     }
   ],
   "paths": {
