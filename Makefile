@@ -16,7 +16,7 @@ resources-cleanup:
 	rm -rf $(ROOT_DIR)/.resources.output.json
 	$(MAKE) -f Makefile prepare
 
-resources-deploy: template, resources-cleanup
+resources-deploy: template resources-cleanup
 	node $(ROOT_DIR)/scripts/resources-build.js
 	# Certificate for CloudFront Distribution must be at us-east-1
 	aws cloudformation deploy --region us-east-1 --stack-name $(RESOURCES_STACK_NAME) --template-file $(ROOT_DIR)/.resources.json
