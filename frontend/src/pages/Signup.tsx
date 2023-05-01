@@ -12,7 +12,7 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useMutation } from "@tanstack/react-query";
-import configs from "../configs.json";
+import configs from "@configs";
 
 interface Form {
   name: string;
@@ -54,7 +54,7 @@ export default function Signup() {
   });
   const mutation = useMutation<any, any, Form>(
     async ({ name, email, password }) => {
-      const uri = new URL(configs.frontend.api.endpoint);
+      const uri = new URL(configs.backend.endpoint);
       uri.pathname = "/account";
 
       const res = await fetch(uri, {

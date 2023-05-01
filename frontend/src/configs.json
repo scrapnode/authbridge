@@ -1,1 +1,31 @@
-{ "project": { "name": "AuthBridge", "env": "development" }, "frontend": { "bucket": { "name": "authbridge" }, "api": { "endpoint": "https://ffyjtndk9a.execute-api.us-east-2.amazonaws.com" } } }
+{
+  "backend": {
+    "endpoint": "https://api.authbridge.upmesh.live"
+  },
+  "aws": {
+    "region": "us-east-2"
+  },
+  "project": {
+    "id": "authbridge",
+    "name": "AuthBridge",
+    "stage": "dev"
+  },
+  "frontend": {
+    "domain": {
+      "zone": {
+        "id": "Z06198971BQJ9RGMEW7V1"
+      },
+      "aliases": [
+        "authbridge.upmesh.live"
+      ],
+      "acm": {
+        "arn": "arn:aws:acm:us-east-1:058434268238:certificate/0cdc05e1-87cf-4041-946d-5340fce9aa07"
+      }
+    },
+    "s3": {
+      "bucket": {
+        "name": "authbridge"
+      }
+    }
+  }
+}

@@ -1,7 +1,7 @@
 import * as React from "react";
 import Link from "@mui/material/Link";
 import Typography from "@mui/material/Typography";
-import configs from "../configs.json";
+import configs from "@configs";
 
 export default function Copyright() {
   const year = new Date().getFullYear();
