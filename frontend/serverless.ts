@@ -73,7 +73,7 @@ function hasCustomDomain(): boolean {
 function withDefault(deployment: AWS): AWS {
   if (hasCustomDomain()) return deployment;
 
-  deployment.resources.Resources.S3Frontend = {
+  _.set(deployment, "resources.Resources.S3OpenAPI", {
     Type: "AWS::S3::Bucket",
     Properties: {
       BucketName: configs.frontend.s3.bucket.name,
@@ -91,13 +91,13 @@ function withDefault(deployment: AWS): AWS {
         BlockPublicPolicy: false,
       },
     },
-  };
+  });
 
-  deployment.resources.Resources.S3FrontendPolicy = {
+  _.set(deployment, "resources.Resources.S3OpenAPIPolicy", {
     Type: "AWS::S3::BucketPolicy",
-    DependsOn: ["S3Frontend"],
+    DependsOn: ["S3OpenAPI"],
     Properties: {
-      Bucket: { Ref: "S3Frontend" },
+      Bucket: { Ref: "S3OpenAPI" },
       PolicyDocument: {
         Statement: [
           {
@@ -107,17 +107,14 @@ function withDefault(deployment: AWS): AWS {
             Action: ["s3:GetObject"],
             Resource: [
               {
-                "Fn::Join": [
-                  "",
-                  ["arn:aws:s3:::", { Ref: "S3Frontend" }, "/*"],
-                ],
+                "Fn::Join": ["", ["arn:aws:s3:::", { Ref: "S3OpenAPI" }, "/*"]],
               },
             ],
           },
         ],
       },
     },
-  };
+  });
 
   return deployment;
 }
@@ -125,7 +122,7 @@ function withDefault(deployment: AWS): AWS {
 function withCustomDomain(deployment: AWS): AWS {
   if (!hasCustomDomain()) return deployment;
 
-  deployment.resources.Resources.S3Frontend = {
+  _.set(deployment, "resources.Resources.S3OpenAPI", {
     Type: "AWS::S3::Bucket",
     Properties: {
       BucketName: configs.frontend.s3.bucket.name,
@@ -143,13 +140,13 @@ function withCustomDomain(deployment: AWS): AWS {
         RestrictPublicBuckets: true,
       },
     },
-  };
+  });
 
-  deployment.resources.Resources.S3FrontendPolicy = {
+  _.set(deployment, "resources.Resources.S3OpenAPIPolicy", {
     Type: "AWS::S3::BucketPolicy",
-    DependsOn: ["S3Frontend"],
+    DependsOn: ["S3OpenAPI"],
     Properties: {
-      Bucket: { Ref: "S3Frontend" },
+      Bucket: { Ref: "S3OpenAPI" },
       PolicyDocument: {
         Statement: [
           {
@@ -161,10 +158,7 @@ function withCustomDomain(deployment: AWS): AWS {
             Action: ["s3:GetObject"],
             Resource: [
               {
-                "Fn::Join": [
-                  "",
-                  ["arn:aws:s3:::", { Ref: "S3Frontend" }, "/*"],
-                ],
+                "Fn::Join": ["", ["arn:aws:s3:::", { Ref: "S3OpenAPI" }, "/*"]],
               },
             ],
             Condition: {
@@ -186,9 +180,9 @@ function withCustomDomain(deployment: AWS): AWS {
         ],
       },
     },
-  };
+  });
 
-  deployment.resources.Resources.CloudFrontOriginAccessControl = {
+  _.set(deployment, "resources.Resources.CloudFrontOriginAccessControl", {
     Type: "AWS::CloudFront::OriginAccessControl",
     Properties: {
       OriginAccessControlConfig: {
@@ -199,9 +193,9 @@ function withCustomDomain(deployment: AWS): AWS {
         SigningProtocol: "sigv4",
       },
     },
-  };
+  });
 
-  deployment.resources.Resources.CloudFrontDistribution = {
+  _.set(deployment, "resources.Resources.CloudFrontDistribution", {
     Type: "AWS::CloudFront::Distribution",
     DependsOn: ["CloudFrontOriginAccessControl"],
     DeletionPolicy: "Delete",
@@ -219,7 +213,7 @@ function withCustomDomain(deployment: AWS): AWS {
               "Fn::Join": [
                 "",
                 [
-                  { Ref: "S3Frontend" },
+                  { Ref: "S3OpenAPI" },
                   ".s3.",
                   { Ref: "AWS::Region" },
                   ".amazonaws.com",
@@ -258,9 +252,9 @@ function withCustomDomain(deployment: AWS): AWS {
         },
       },
     },
-  };
+  });
 
-  deployment.resources.Resources.Route53RecordSetGroup = {
+  _.set(deployment, "resources.Resources.Route53RecordSetGroup", {
     Type: "AWS::Route53::RecordSetGroup",
     DeletionPolicy: "Delete",
     DependsOn: ["CloudFrontDistribution"],
@@ -280,7 +274,7 @@ function withCustomDomain(deployment: AWS): AWS {
         },
       })),
     },
-  };
+  });
 
   return deployment;
 }

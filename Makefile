@@ -4,6 +4,13 @@ RESOURCES_STACK_NAME:=$(shell jq -r '.project.id' $(ROOT_DIR)/.template.json)-re
 template:
 	node $(ROOT_DIR)/scripts/template-build.js
 
+prepare: template
+ifneq ("$(wildcard  $(ROOT_DIR)/.resources.output.json)","")
+		jq -s '.[0] * .[1]' $(ROOT_DIR)/.template.json $(ROOT_DIR)/.resources.output.json > $(ROOT_DIR)/.template.output.json
+else
+		cat $(ROOT_DIR)/.template.json > $(ROOT_DIR)/.template.output.json
+endif
+
 resources-cleanup: 
 	rm -rf $(ROOT_DIR)/.resources.json
 	rm -rf $(ROOT_DIR)/.resources.output.json
@@ -20,16 +27,9 @@ resources-destroy: resources-cleanup
 	aws cloudformation delete-stack --region us-east-1 --stack-name $(RESOURCES_STACK_NAME)
 	aws cloudformation wait stack-delete-complete --region us-east-1 --stack-name $(RESOURCES_STACK_NAME)
 
-all-deploy: backend-deploy openapi-deploy
+all-deploy: backend-deploy openapi-deploy frontend-deploy resources-deploy
 
-all-destroy: backend-destroy openapi-destroy
-
-prepare: template
-ifneq ("$(wildcard  $(ROOT_DIR)/.resources.output.json)","")
-		jq -s '.[0] * .[1]' $(ROOT_DIR)/.template.json $(ROOT_DIR)/.resources.output.json > $(ROOT_DIR)/.template.output.json
-else
-		cat $(ROOT_DIR)/.template.json > $(ROOT_DIR)/.template.output.json
-endif
+all-destroy: backend-destroy openapi-destroy frontend-destroy resources-deploy
 
 backend-deploy: prepare
 	$(MAKE) -f backend/Makefile deploy
@@ -42,3 +42,9 @@ openapi-deploy: prepare
 	
 openapi-destroy:
 	$(MAKE) -f openapi/Makefile destroy 
+
+frontend-deploy: prepare
+	$(MAKE) -f frontend/Makefile deploy
+	
+frontend-destroy:
+	$(MAKE) -f frontend/Makefile destroy 
