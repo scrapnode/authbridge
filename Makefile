@@ -5,7 +5,7 @@ template:
 	node $(ROOT_DIR)/scripts/template-build.js
 
 prepare: template
-ifneq ("$(wildcard  $(ROOT_DIR)/.resources.output.json)","")
+ifneq ("$(wildcard $(ROOT_DIR)/.resources.output.json)","")
 		jq -s '.[0] * .[1]' $(ROOT_DIR)/.template.json $(ROOT_DIR)/.resources.output.json > $(ROOT_DIR)/.template.output.json
 else
 		cat $(ROOT_DIR)/.template.json > $(ROOT_DIR)/.template.output.json
@@ -18,7 +18,7 @@ resources-cleanup:
 
 resources-deploy: template resources-cleanup
 	node $(ROOT_DIR)/scripts/resources-build.js
-ifneq ("$(wildcard  $(ROOT_DIR)/.resources.output.json)","")
+ifneq ("$(wildcard $(ROOT_DIR)/.resources.json)","")
 	# Certificate for CloudFront Distribution must be at us-east-1
 	aws cloudformation deploy --region us-east-1 --stack-name $(RESOURCES_STACK_NAME) --template-file $(ROOT_DIR)/.resources.json
 	aws cloudformation wait stack-exists --region us-east-1 --stack-name $(RESOURCES_STACK_NAME)
