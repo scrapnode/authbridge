@@ -27,9 +27,9 @@ resources-destroy: resources-cleanup
 	aws cloudformation delete-stack --region us-east-1 --stack-name $(RESOURCES_STACK_NAME)
 	aws cloudformation wait stack-delete-complete --region us-east-1 --stack-name $(RESOURCES_STACK_NAME)
 
-all-deploy: backend-deploy openapi-deploy frontend-deploy resources-deploy
+all-deploy:  resources-deploy backend-deploy openapi-deploy frontend-deploy
 
-all-destroy: backend-destroy openapi-destroy frontend-destroy resources-deploy
+all-destroy: openapi-destroy frontend-destroy backend-destroy resources-deploy
 
 backend-deploy: prepare
 	$(MAKE) -f backend/Makefile deploy
