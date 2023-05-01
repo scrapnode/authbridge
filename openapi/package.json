@@ -9,17 +9,13 @@
   "engines": {
     "node": ">=14.15.0"
   },
-  "dependencies": {
-    "@middy/core": "^3.4.0",
-    "@middy/http-json-body-parser": "^3.4.0",
+  "dependencies": {},
+  "devDependencies": {
     "handlebars": "^4.7.7",
     "js-yaml": "^4.1.0",
     "lodash": "^4.17.21",
-    "serverless-s3-sync": "^3.1.0"
-  },
-  "devDependencies": {
+    "serverless-s3-sync": "^3.1.0",
     "@serverless/typescript": "^3.0.0",
-    "@types/aws-lambda": "^8.10.71",
     "@types/node": "^14.14.25",
     "esbuild": "^0.14.11",
     "json-schema-to-ts": "^1.5.0",

@@ -11,10 +11,10 @@ ifeq (,$(wildcard $(ROOT_DIR)/../backend/.output.json))
 endif
 	jq 'del(.frontend, .backend)' $(ROOT_DIR)/../.template.output.json > /tmp/authbridge-openapi.configs.json;
 	jq -s '.[0] * .[1]' $(ROOT_DIR)/../backend/.output.json /tmp/authbridge-openapi.configs.json > $(ROOT_DIR)/src/configs.json
-	cd $(ROOT_DIR) && npm install && npm run build && cd $(CURRENT_DIR);
+	cd $(ROOT_DIR) && npm install && cd $(CURRENT_DIR);
 
 deploy: prepare
-	cd $(ROOT_DIR) && sls deploy && cd $(CURRENT_DIR);
+	cd $(ROOT_DIR) && npm run build && sls deploy && cd $(CURRENT_DIR);
 
 destroy:
 	cd $(ROOT_DIR) && sls remove || true && cd $(CURRENT_DIR);
